@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Card from "../components/Card";
 import ChannelCard from "../components/ChannelCard";
 import VideoCard from "../components/VideoCard";
+import apiClient from "../apiClient";
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ export default function Search() {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const res = await axios.get(`/videos/search${query}`);
+      const res = await apiClient.get(`/videos/search${query}`);
       setVideos(res.data);
     };
     fetchVideos();
@@ -27,7 +27,7 @@ export default function Search() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await axios.get(`/users/search${query}`);
+      const res = await apiClient.get(`/users/search${query}`);
       setUsers(res.data);
     };
     fetchUsers();

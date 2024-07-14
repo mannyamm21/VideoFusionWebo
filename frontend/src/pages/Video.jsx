@@ -11,7 +11,6 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Comments from "../components/Comments";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { format } from "timeago.js";
 import { fetchSuccess, like, dislike } from "../Context/VideoSlice";
 import { subscription, addSavedVideo } from "../Context/userSlice";
@@ -141,14 +140,14 @@ export default function Video() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`/videos/find/${path}`);
-        const channelRes = await axios.get(
+        const videoRes = await apiClient.get(`/videos/find/${path}`);
+        const channelRes = await apiClient.get(
           `/users/find/${videoRes.data.userId}`
         );
         setChannel(channelRes.data);
         dispatch(fetchSuccess(videoRes.data));
         setIsSaved(currentUser?.savedVideos?.includes(videoRes.data._id)); // Check saved status here
-        await axios.put(`/videos/view/${videoRes.data._id}`); // Add view count here
+        await apiClient.put(`/videos/view/${videoRes.data._id}`); // Add view count here
       } catch (err) {
         console.log(err);
       }
@@ -168,9 +167,9 @@ export default function Video() {
 
   const handleSub = async () => {
     if (currentUser.subscribedUsers.includes(channel._id)) {
-      await axios.put(`/users/unsub/${channel._id}`);
+      await apiClient.put(`/users/unsub/${channel._id}`);
     } else {
-      await axios.put(`/users/sub/${channel._id}`);
+      await apiClient.put(`/users/sub/${channel._id}`);
     }
     dispatch(subscription(channel._id));
   };
@@ -184,7 +183,7 @@ export default function Video() {
 
     if (!isCurrentlySaved) {
       try {
-        await axios.put(`/users/savedVideos/${currentVideo?._id}`);
+        await apiClient.put(`/users/savedVideos/${currentVideo?._id}`);
         // Update the saved videos list directly
         dispatch(
           addSavedVideo([...currentUser.savedVideos, currentVideo?._id])

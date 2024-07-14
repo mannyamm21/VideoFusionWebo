@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +8,7 @@ import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
-// Styled components
+import apiClient from "../apiClient";
 
 const Container = styled1.div`
   display: flex;
@@ -190,7 +189,7 @@ const LoginForm = () => {
         formData.append("avatar", avatarFile);
       }
 
-      const res = await axios.post("/auth/sign-up", formData, {
+      const res = await apiClient.post("/auth/sign-up", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

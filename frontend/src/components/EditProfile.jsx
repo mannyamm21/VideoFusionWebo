@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
-
+import apiClient from "../apiClient";
 import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import FileUploader from "./FileUploader";
+import apiClientMultipart from "../apiClientMutipart";
 
 const Button1 = styled.button`
   border-radius: 3px;
@@ -84,7 +84,7 @@ const EditProfile = ({ setOpen }) => {
       try {
         const userId = currentUser?._id;
         const url = `/users/find/${userId}`;
-        const response = await axios.get(url);
+        const response = await apiClient.get(url);
         const userData = response.data; // Assuming response.data contains user details
 
         // Populate form data
@@ -129,18 +129,26 @@ const EditProfile = ({ setOpen }) => {
       if (avatarFile) {
         const avatarFormData = new FormData();
         avatarFormData.append("avatar", avatarFile);
-        await axios.patch(`/users/avatar/${userId}`, avatarFormData);
+        const avatarResponse = await apiClientMultipart.patch(
+          `/users/avatar/${userId}`,
+          avatarFormData
+        );
+        data.avatarUrl = avatarResponse.data.avatarUrl; // Assuming the response contains the URL of the uploaded avatar
       }
 
       // Update cover image if selected
       if (coverFile) {
         const coverFormData = new FormData();
         coverFormData.append("coverImage", coverFile);
-        await axios.patch(`/users/coverImage/${userId}`, coverFormData);
+        const coverResponse = await apiClientMultipart.patch(
+          `/users/coverImage/${userId}`,
+          coverFormData
+        );
+        data.coverImageUrl = coverResponse.data.coverImageUrl; // Assuming the response contains the URL of the uploaded cover image
       }
 
       // Update user details (name, username, email)
-      const response = await axios.put(url, data);
+      const response = await apiClient.put(url, data);
       console.log("Profile updated:", response.data);
       setOpen(false);
     } catch (error) {

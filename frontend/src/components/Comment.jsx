@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import apiClient from "../apiClient";
 import { Link } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector } from "react-redux";
@@ -55,7 +55,7 @@ const Comment = ({ comment, onDelete }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`/users/find/${comment?.userId}`);
+        const res = await apiClient.get(`/users/find/${comment?.userId}`);
         setChannel(res.data);
       } catch (error) {
         console.log(error);
@@ -66,7 +66,7 @@ const Comment = ({ comment, onDelete }) => {
 
   const handleDeleteComment = async () => {
     try {
-      await axios.delete(`/comment/${comment._id}`, {
+      await apiClient.delete(`/comment/${comment._id}`, {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       onDelete(comment._id);

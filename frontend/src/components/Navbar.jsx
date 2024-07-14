@@ -5,14 +5,11 @@ import styled1 from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import Upload from "./Upload";
-import axios from "axios";
 import { logout } from "../Context/userSlice";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-// import { purple } from "@mui/material/colors";
-// import Button from "@mui/material/Button";
-// import { styled } from "@mui/material/styles";
+import apiClient from "../apiClient";
 
 const Container = styled1.div`
   position: sticky;
@@ -111,7 +108,7 @@ export default function Navbar() {
 
   const handleSignOut = async () => {
     try {
-      await axios.post("/auth/sign-out");
+      await apiClient.post("/auth/sign-out");
       dispatch(logout());
       navigate("/sign-in"); // Redirect to sign-in page or homepage after logout
     } catch (error) {

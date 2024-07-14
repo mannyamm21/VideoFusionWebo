@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Card from "./Card";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../apiClient";
 
 const Container = styled.div`
   flex: 2;
@@ -13,7 +13,7 @@ export default function Recommendation({ tags }) {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`/videos/tag?tags=${tags}`);
+        const res = await apiClient.get(`/videos/tag?tags=${tags}`);
         setVideos(res.data);
       } catch (err) {
         console.log(err);

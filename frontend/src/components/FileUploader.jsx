@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 const Input = styled.input`

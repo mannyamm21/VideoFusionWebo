@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import apiClient from "../apiClient";
 import Card from "./Card";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
@@ -19,7 +19,7 @@ export default function SavedVideo() {
   useEffect(() => {
     const fetchSavedVideos = async () => {
       try {
-        const response = await axios.get(`/users/${userId}/savedVideos`);
+        const response = await apiClient.get(`/users/${userId}/savedVideos`);
         setSavedVideos(response.data);
       } catch (error) {
         console.error("Error fetching saved videos:", error);

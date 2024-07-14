@@ -3,15 +3,18 @@ import axios from 'axios';
 // Retrieve the token from local storage or a context/state management solution
 const token = localStorage.getItem('access_token') || '';
 
-const apiClient = axios.create({
+
+
+// Function to handle multipart/form-data requests
+const apiClientMultipart = axios.create({
     // baseURL: "http://localhost:5000/api/v1",
     baseURL: "https://videofusionwebo-backend.onrender.com/api/v1",
-    withCredentials: true, // This ensures cookies are sent with requests
+    withCredentials: true,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${token}`
     }
 });
 
-
-export default apiClient;
+// Export both clients
+export default apiClientMultipart;

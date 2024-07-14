@@ -1,9 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { format } from "timeago.js";
-
+import apiClient from "../apiClient";
 const Container = styled.div`
   width: ${(props) => (props.type !== "sm" ? "360px" : "100%")};
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "25px")};
@@ -62,12 +61,12 @@ const VideoCard = ({ type, videoId }) => {
     const fetchVideoAndChannel = async () => {
       try {
         // Fetch the video first
-        const videoRes = await axios.get(`/videos/find/${videoId}`);
+        const videoRes = await apiClient.get(`/videos/find/${videoId}`);
         setVideo(videoRes.data);
 
         // Then fetch the channel based on the video userId
         if (videoRes.data.userId) {
-          const channelRes = await axios.get(
+          const channelRes = await apiClient.get(
             `/users/find/${videoRes.data.userId}`
           );
           setChannel(channelRes.data);

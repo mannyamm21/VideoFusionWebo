@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../apiClient";
 import { useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -44,7 +44,7 @@ export default function Comments({ videoId }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`/comment/${videoId}`);
+        const res = await apiClient.get(`/comment/${videoId}`);
         setComments(res.data);
       } catch (error) {
         console.log(error);
@@ -56,7 +56,7 @@ export default function Comments({ videoId }) {
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
     try {
-      const res = await axios.post(
+      const res = await apiClient.post(
         `/comment/`,
         { videoId, desc: newComment },
         { headers: { Authorization: `Bearer ${currentUser.token}` } }

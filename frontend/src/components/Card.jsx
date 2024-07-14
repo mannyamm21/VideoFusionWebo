@@ -1,9 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { format } from "timeago.js";
-
+import apiClient from "../apiClient";
 const Container = styled.div`
   width: ${(props) => (props.type !== "sm" ? "360px" : "100%")};
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "25px")};
@@ -61,7 +60,7 @@ const Card = ({ type, video }) => {
     const fetchChannel = async () => {
       if (video && video.userId) {
         try {
-          const res = await axios.get(`/users/find/${video.userId}`);
+          const res = await apiClient.get(`/users/find/${video.userId}`);
           setChannel(res.data);
         } catch (error) {
           console.error("Error fetching channel:", error); // Log the error

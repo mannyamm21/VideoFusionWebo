@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "../apiClient";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -101,9 +101,9 @@ const ChannelCard = ({
   const handleSub = async () => {
     try {
       if (subscribed) {
-        await axios.put(`/users/unsub/${channelId}`);
+        await apiClient.put(`/users/unsub/${channelId}`);
       } else {
-        await axios.put(`/users/sub/${channelId}`);
+        await apiClient.put(`/users/sub/${channelId}`);
       }
       dispatch(subscription(channelId)); // Update Redux state
     } catch (error) {

@@ -1,5 +1,3 @@
-// ShareModal.jsx
-import React from "react";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { ShareSocial } from "react-share-social";

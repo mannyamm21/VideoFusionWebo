@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled1 from "styled-components";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Card from "../components/Card";
 import EditIcon from "@mui/icons-material/Edit";
 import EditProfile from "../components/EditProfile";
@@ -10,7 +9,7 @@ import Button from "@mui/material/Button";
 import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { subscription } from "../Context/userSlice";
-
+import apiClient from "../apiClient";
 const Container = styled1.div`
   display: flex;
   flex-direction: column;
@@ -118,14 +117,14 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         // Fetch user data including video IDs
-        const userRes = await axios.get(`/users/find/${userId}`);
+        const userRes = await apiClient.get(`/users/find/${userId}`);
         const userData = userRes.data;
         setUser(userData);
         setChannel(userData);
         // Fetch video details for each video ID
         const videoIds = userData.videos;
         const videoPromises = videoIds.map((id) =>
-          axios.get(`/videos/find/${id}`)
+          apiClient.get(`/videos/find/${id}`)
         );
         const videoResults = await Promise.all(videoPromises);
 
@@ -146,8 +145,8 @@ const Profile = () => {
 
   const handleSub = async () => {
     currentUser.subscribedUsers.includes(channel._id)
-      ? await axios.put(`/users/unsub/${channel._id}`)
-      : await axios.put(`/users/sub/${channel._id}`);
+      ? await apiClient.put(`/users/unsub/${channel._id}`)
+      : await apiClient.put(`/users/sub/${channel._id}`);
     dispatch(subscription(channel._id));
   };
 

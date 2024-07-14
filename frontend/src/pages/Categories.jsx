@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import apiClient from "../apiClient";
 
 const Container = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export default function Categories() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`/videos/category/${category}`);
+        const res = await apiClient.get(`/videos/category/${category}`);
         setVideos(res.data);
       } catch (err) {
         console.log(err);

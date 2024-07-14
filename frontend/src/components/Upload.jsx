@@ -7,7 +7,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../lib/utils/firebase";
-import axios from "axios";
+import apiClient from "../apiClient";
 import { useNavigate } from "react-router-dom";
 import categories from "../lib/utils/categories";
 import CloseIcon from "@mui/icons-material/Close";
@@ -173,7 +173,7 @@ export default function Upload({ setOpen }) {
     console.log("Category:", category);
 
     try {
-      const res = await axios.post("/videos", {
+      const res = await apiClient.post("/videos", {
         ...inputs,
         tags,
         category,

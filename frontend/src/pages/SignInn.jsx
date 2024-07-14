@@ -1,5 +1,4 @@
 import styled1 from "styled-components";
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../Context/userSlice";
@@ -9,8 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
-
-// Styled components
+import apiClient from "../apiClient";
 
 const Container = styled1.div`
   display: flex;
@@ -168,7 +166,7 @@ export default function SignInn() {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/auth/sign-in", {
+      const res = await apiClient.post("/auth/sign-in", {
         username,
         password,
       });
@@ -184,7 +182,7 @@ export default function SignInn() {
     dispatch(loginStart());
     signInWithPopup(auth, provider)
       .then((result) => {
-        axios
+        apiClient
           .post("/auth/google", {
             name: result.user.displayName,
             email: result.user.email,
@@ -255,7 +253,7 @@ export default function SignInn() {
           </button>
         </SocialIcons>
         <SignupText>
-          Don't have an account? <Link to="/sign-up">Sign Up</Link>
+          Dont have an account? <Link to="/sign-up">Sign Up</Link>
         </SignupText>
       </FormContainer>
     </Container>
