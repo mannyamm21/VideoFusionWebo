@@ -1,5 +1,5 @@
 // Video.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled1 from "styled-components";
 import Recommendation from "../components/Recommendation";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
@@ -19,6 +19,7 @@ import { styled } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import ShareModal from "../components/ShareModal";
+import apiClient from "../apiClient";
 
 const Container = styled1.div`
   display: flex;
@@ -156,12 +157,12 @@ export default function Video() {
   }, [path, dispatch, currentUser]);
 
   const handleLike = async () => {
-    await axios.put(`/users/like/${currentVideo._id}`);
+    await apiClient.put(`/users/like/${currentVideo._id}`);
     dispatch(like(currentUser._id));
   };
 
   const handleDislike = async () => {
-    await axios.put(`/users/dislike/${currentVideo._id}`);
+    await apiClient.put(`/users/dislike/${currentVideo._id}`);
     dispatch(dislike(currentUser._id));
   };
 

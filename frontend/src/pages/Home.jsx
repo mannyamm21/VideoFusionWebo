@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import apiClient from "../apiClient";
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ export default function Home({ type = "random" }) {
     console.log("Fetching videos of type:", type);
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`/videos/${type}`);
+        const res = await apiClient.get(`/videos/${type}`);
         setVideos(res.data);
       } catch (error) {
         console.error("Error fetching videos:", error); // Log the error
