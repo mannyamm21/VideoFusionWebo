@@ -251,9 +251,9 @@ export default function Video() {
             <ColorButton
               variant="contained"
               onClick={handleSub}
-              subscribed={currentUser?.subscribedUsers?.includes(channel._id)}
+              subscribed={currentUser?.subscribedUsers?.includes(channel?._id)}
             >
-              {currentUser?.subscribedUsers?.includes(channel._id)
+              {currentUser?.subscribedUsers?.includes(channel?._id)
                 ? "SUBSCRIBED"
                 : "SUBSCRIBE"}
             </ColorButton>

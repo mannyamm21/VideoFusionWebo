@@ -109,8 +109,6 @@ export const signIn = asyncHandler(async (req, res, next) => {
 
     res.cookie("access_token", token, {
         httpOnly: true,
-        secure: true, // Set to true in production with HTTPS
-        sameSite: 'Strict'
     }).status(200).json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
 });
 
