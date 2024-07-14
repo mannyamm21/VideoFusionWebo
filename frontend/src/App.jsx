@@ -6,7 +6,6 @@ import Navbar from "./components/Navbar";
 import { darkTheme, lightTheme } from "./lib/utils/Theme";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
-import axios from "axios";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import { useSelector } from "react-redux";
@@ -14,12 +13,6 @@ import Categories from "./pages/Categories";
 import SavedVideo from "./components/SavedVideo";
 import SignUp from "./pages/SignUp";
 import SignInn from "./pages/SignInn";
-
-axios.defaults.baseURL = "http://localhost:5000/api/v1"; //http://localhost:5000/api/v1
-
-// axios.defaults.baseURL = "https://videofusionwebo-backend.onrender.com/api/v1";
-
-axios.defaults.withCredentials = true;
 
 const Container = styled.div`
   display: flex;
