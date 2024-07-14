@@ -13,6 +13,7 @@ import Categories from "./pages/Categories";
 import SavedVideo from "./components/SavedVideo";
 import SignUp from "./pages/SignUp";
 import SignInn from "./pages/SignInn";
+import Settings from "./pages/Settings";
 
 const Container = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ function App() {
                   <Route path="search" element={<Search />} />
                   <Route path="category/:category" element={<Categories />} />
                   <Route path="savedVideos/:userId" element={<SavedVideo />} />
+                  <Route path="settings/:id" element={<Settings />} />
                   <Route path="sign-up" element={<SignUp />} />
                   <Route
                     path="sign-in"

@@ -172,10 +172,15 @@ export default function Menu({ darkMode, setDarkMode }) {
           </Item>
         </Link>
         <Hr />
-        <Item>
-          <SettingsOutlinedIcon />
-          Settings
-        </Item>
+        <Link
+          to={`/settings/${currentUser?._id}`}
+          style={{ textDecoration: "none" }}
+        >
+          <Item>
+            <SettingsOutlinedIcon />
+            Settings
+          </Item>
+        </Link>
         <Item>
           <FlagOutlinedIcon />
           Report

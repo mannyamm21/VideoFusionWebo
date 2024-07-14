@@ -166,7 +166,7 @@ export default function Video() {
   };
 
   const handleSub = async () => {
-    if (currentUser.subscribedUsers.includes(channel._id)) {
+    if (currentUser.subscribedUsers?.includes(channel._id)) {
       await apiClient.put(`/users/unsub/${channel._id}`);
     } else {
       await apiClient.put(`/users/sub/${channel._id}`);

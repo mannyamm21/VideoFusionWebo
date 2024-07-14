@@ -66,7 +66,7 @@ const Comment = ({ comment, onDelete }) => {
 
   const handleDeleteComment = async () => {
     try {
-      await apiClient.delete(`/comment/${comment._id}`, {
+      await apiClient.delete(`/comment/${comment?._id}`, {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       onDelete(comment._id);
@@ -85,9 +85,9 @@ const Comment = ({ comment, onDelete }) => {
           <Name>{channel?.username}</Name>
         </Link>
         <DateText>1 day ago</DateText>
-        <Text>{comment.desc}</Text>
+        <Text>{comment?.desc}</Text>
       </Details>
-      {currentUser._id === channel._id && (
+      {currentUser?._id === channel?._id && (
         <DeleteButton onClick={handleDeleteComment}>
           <DeleteOutlineIcon style={{ width: "20px", height: "20px" }} />
         </DeleteButton>
