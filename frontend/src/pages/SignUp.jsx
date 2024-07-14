@@ -9,6 +9,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
 import apiClient from "../apiClient";
+import { toast } from "react-hot-toast";
 
 const Container = styled1.div`
   display: flex;
@@ -195,11 +196,14 @@ const LoginForm = () => {
         },
       });
       dispatch(loginSuccess(res.data.data));
+      toast.success("Signed Up Successful");
       navigate("/"); // Assuming res.data.data contains the user object
+
       console.log(res.data);
     } catch (error) {
       dispatch(loginFailure());
       console.error("Failed to sign up:", error);
+      toast.error("An error occurred during login. Please try again.");
     }
   };
 

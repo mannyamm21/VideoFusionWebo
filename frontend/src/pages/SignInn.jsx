@@ -9,7 +9,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
 import apiClient from "../apiClient";
-
+import { toast } from "react-hot-toast";
 const Container = styled1.div`
   display: flex;
   flex-direction: column;
@@ -191,11 +191,13 @@ export default function SignInn() {
           .then((res) => {
             console.log(res);
             dispatch(loginSuccess(res.data.data));
+            toast.success("Login Successful");
             navigate("/"); // Assuming res.data.data contains the user object
           });
       })
       .catch((error) => {
         console.log(error);
+        toast.error("An error occurred during login. Please try again.");
         dispatch(loginFailure());
       });
   };

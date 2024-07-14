@@ -10,6 +10,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import apiClient from "../apiClient";
+import { toast } from "react-hot-toast";
 
 const Container = styled1.div`
   position: sticky;
@@ -110,9 +111,11 @@ export default function Navbar() {
     try {
       await apiClient.post("/auth/sign-out");
       dispatch(logout());
+      toast.success("LogOut Successful");
       navigate("/sign-in"); // Redirect to sign-in page or homepage after logout
     } catch (error) {
       console.error("Failed to sign out", error);
+      toast.error("Error during logout:", error);
     }
   };
   return (
@@ -142,6 +145,7 @@ export default function Navbar() {
                   <Text2>Sign Out</Text2>
                 </Texts>
               </LoginButton>
+              {/* <LogoutButton onClick={handleSignOut}/> */}
             </User>
           ) : (
             <Link to="sign-in" style={{ textDecoration: "none" }}>

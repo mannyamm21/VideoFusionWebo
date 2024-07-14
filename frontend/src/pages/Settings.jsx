@@ -187,15 +187,15 @@ const Settings = () => {
             <img src={currentUser?.avatar} alt="Avatar" />
           </Avatar>
           <UserInfo>
-            <Name>{currentUser.name}</Name>
-            <Email>{currentUser.email}</Email>
-            <Username>@{currentUser.username}</Username>
+            <Name>{currentUser?.name}</Name>
+            <Email>{currentUser?.email}</Email>
+            <Username>@{currentUser?.username}</Username>
           </UserInfo>
         </AvatarContainer>
       </Section>
       <EditProfile>
         If you want to make changes in your account.{" "}
-        <Link to={`/profile/${currentUser._id}`}>
+        <Link to={`/profile/${currentUser?._id}`}>
           Edit Proflie
           <EditIcon
             style={{ position: "absolute", top: "332px", right: "1085px" }}
