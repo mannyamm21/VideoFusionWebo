@@ -30,19 +30,19 @@ export const userSlice = createSlice({
             state.error = false;
         },
         subscription: (state, action) => {
-            if (state.currentUser.subscribedUsers?.includes(action.payload)) {
-                state.currentUser.subscribedUsers?.splice(
-                    state.currentUser.subscribedUsers?.findIndex(
+            if (state.currentUser.data.user.subscribedUsers?.includes(action.payload)) {
+                state.currentUser.data.user.subscribedUsers?.splice(
+                    state.currentUser.data.user.subscribedUsers?.findIndex(
                         (channelId) => channelId === action.payload
                     ),
                     1
                 );
             } else {
-                state.currentUser.subscribedUsers?.push(action.payload);
+                state.currentUser.data.user.subscribedUsers?.push(action.payload);
             }
         },
         addSavedVideo: (state, action) => {
-            state.currentUser.savedVideos?.push(action.payload);
+            state.currentUser.data.user.savedVideos?.push(action.payload);
         },
     },
 });

@@ -42,6 +42,7 @@ const userSchema = new Schema({
     },
     subscribedUsers: {
         type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        unique: true,
     },
     fromGoogle: {
         type: Boolean,

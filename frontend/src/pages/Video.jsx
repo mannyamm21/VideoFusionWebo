@@ -133,9 +133,9 @@ export default function Video() {
   const location = useLocation();
   const [open, setOpen] = useState(false); // State for the modal
   const path = location.pathname.split("/")[2];
-
   const [channel, setChannel] = useState({});
   const [isSaved, setIsSaved] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,8 +148,13 @@ export default function Video() {
         dispatch(fetchSuccess(videoRes.data));
         setIsSaved(
           currentUser?.data?.user?.savedVideos?.includes(videoRes.data._id)
-        ); // Check saved status here
-        await apiClient.put(`/videos/view/${videoRes.data._id}`); // Add view count here
+        );
+        setIsSubscribed(
+          currentUser?.data?.user?.subscribedUsers?.includes(
+            channelRes.data._id
+          )
+        );
+        await apiClient.put(`/videos/view/${videoRes.data._id}`);
       } catch (err) {
         console.log(err);
       }
@@ -168,23 +173,22 @@ export default function Video() {
   };
 
   const handleSub = async () => {
-    currentUser?.data?.user?.subscribedUsers?.includes(channel.id)
-      ? await apiClient.put(`/users/unsub/${channel.id}`)
-      : await apiClient.put(`/users/sub/${channel.id}`);
+    const action = isSubscribed ? "unsub" : "sub";
+    await apiClient.put(`/users/${action}/${channel._id}`);
     dispatch(subscription(channel._id));
+    setIsSubscribed(!isSubscribed);
   };
 
   const handleSaveVideo = async () => {
     if (!currentUser || !currentVideo) return;
 
     const isCurrentlySaved = currentUser?.data?.user?.savedVideos?.includes(
-      currentUser.data?.user?._id
+      currentVideo._id
     );
 
     if (!isCurrentlySaved) {
       try {
         await apiClient.put(`/users/savedVideos/${currentVideo?._id}`);
-        // Update the saved videos list directly
         dispatch(
           addSavedVideo([
             ...currentUser.data.user.savedVideos,
@@ -256,17 +260,13 @@ export default function Video() {
             <ColorButton
               variant="contained"
               onClick={handleSub}
-              subscribed={currentUser?.data?.user?.subscribedUsers?.includes(
-                channel?._id
-              )}
+              subscribed={isSubscribed}
             >
-              {currentUser?.data?.user?.subscribedUsers?.includes(channel?._id)
-                ? "SUBSCRIBED"
-                : "SUBSCRIBE"}
+              {isSubscribed ? "SUBSCRIBED" : "SUBSCRIBE"}
             </ColorButton>
           </Channel>
           <Hr />
-          <Comments videoId={currentVideo._id} />
+          <Comments videoId={currentVideo?._id} />
         </Content>
       ) : (
         <div>Loading...</div>

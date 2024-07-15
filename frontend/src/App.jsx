@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Video from "./pages/Video";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import Categories from "./pages/Categories";
 import SavedVideo from "./components/SavedVideo";
 import SignUp from "./pages/SignUp";
@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
-  const { currentUser } = useSelector((state) => state.user);
+  // const { currentUser } = useSelector((state) => state.user);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -51,10 +51,7 @@ function App() {
                   <Route path="savedVideos/:userId" element={<SavedVideo />} />
                   <Route path="settings/:id" element={<Settings />} />
                   <Route path="sign-up" element={<SignUp />} />
-                  <Route
-                    path="sign-in"
-                    element={currentUser ? <Home /> : <SignInn />}
-                  />
+                  <Route path="sign-in" element={<SignInn />} />
                   <Route path="video/:id" element={<Video />} />
                 </Route>
               </Routes>

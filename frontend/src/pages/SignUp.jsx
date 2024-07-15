@@ -8,8 +8,8 @@ import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
-import apiClient from "../apiClient";
 import { toast } from "react-hot-toast";
+import apiClientMultipart from "../apiClientMutipart";
 
 const Container = styled1.div`
   display: flex;
@@ -71,25 +71,6 @@ const InputGroup = styled1.div`
   }
 `;
 
-const ForgotPassword = styled1.div`
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: ${({ theme }) => theme.textSoft};
-  margin: 8px 0 14px 0;
-
-  a {
-    color: ${({ theme }) => theme.text};
-    text-decoration: none;
-    font-size: 14px;
-
-    &:hover {
-      text-decoration: underline rgba(167, 139, 250, 1);
-    }
-  }
-`;
-
 const Button1 = styled1.button`
   display: block;
   width: 100%;
@@ -129,7 +110,7 @@ const SocialIcons = styled1.div`
     border-radius: 0.125rem;
     padding: 0.75rem;
     border: none;
-      color: ${({ theme }) => theme.bg};
+    color: ${({ theme }) => theme.bg};
     background-color: transparent;
     margin-left: 8px;
 
@@ -190,21 +171,17 @@ const LoginForm = () => {
         formData.append("avatar", avatarFile);
       }
 
-      const res = await apiClient.post("/auth/sign-up", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await apiClientMultipart.post("/auth/sign-up", formData);
       // Assuming your response has accessToken and refreshToken
-      dispatch(loginSuccess(res.data));
-      toast.success("Signed Up Successful");
-      navigate("/"); // Assuming res.data.data contains the user object
+      dispatch(loginSuccess(res.data.data));
+      toast.success("Signed Up Successfully");
 
-      console.log(res.data);
+      console.log("User signed up successfully:", res.data.data);
+      navigate("/sign-in"); // Navigate to the home page after successful signup
     } catch (error) {
       dispatch(loginFailure());
       console.error("Failed to sign up:", error);
-      toast.error("An error occurred during login. Please try again.");
+      toast.error("An error occurred during signup. Please try again.");
     }
   };
 
@@ -212,6 +189,7 @@ const LoginForm = () => {
     const file = e.target.files[0];
     setAvatarFile(file);
   };
+
   return (
     <Container>
       <FormContainer>
@@ -252,7 +230,6 @@ const LoginForm = () => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <ForgotPassword></ForgotPassword>
           </InputGroup>
           <Button
             component="label"
@@ -266,8 +243,7 @@ const LoginForm = () => {
               accept="image/*"
             />
           </Button>
-          <ForgotPassword></ForgotPassword>
-          <Button1 className="sign" onClick={handleSignUp}>
+          <Button1 className="sign" type="button" onClick={handleSignUp}>
             Sign Up
           </Button1>
         </Form>
@@ -281,11 +257,9 @@ const LoginForm = () => {
             <GoogleIcon />
           </button>
           <button aria-label="Log in with Twitter" className="icon">
-            {/* Twitter SVG */}
             <XIcon />
           </button>
           <button aria-label="Log in with GitHub" className="icon">
-            {/* GitHub SVG */}
             <GitHubIcon />
           </button>
         </SocialIcons>

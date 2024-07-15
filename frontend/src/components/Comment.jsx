@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"; // Import PropTypes
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import apiClient from "../apiClient";
@@ -51,6 +52,7 @@ const Text = styled.span`
 const Comment = ({ comment, onDelete }) => {
   const [channel, setChannel] = useState({});
   const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -65,9 +67,7 @@ const Comment = ({ comment, onDelete }) => {
 
   const handleDeleteComment = async () => {
     try {
-      await apiClient.delete(`/comment/${comment?._id}`, {
-        headers: { Authorization: `Bearer ${currentUser.accessToken}` },
-      });
+      await apiClient.delete(`/comment/${comment?._id}`);
       onDelete(comment._id);
     } catch (error) {
       console.log("Error deleting comment:", error);
@@ -93,6 +93,16 @@ const Comment = ({ comment, onDelete }) => {
       )}
     </Container>
   );
+};
+
+// PropTypes validation
+Comment.propTypes = {
+  comment: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
+    desc: PropTypes.string.isRequired,
+  }).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default Comment;

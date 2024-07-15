@@ -23,25 +23,13 @@ const generateAccessAndRefereshTokens = async (userId) => {
         return { accessToken, refreshToken };
     } catch (error) {
         console.error("Error in generateAccessAndRefereshTokens:", error);
-        // throw new ApiError(500, "Something went wrong while generating refresh and access tokens");
+        throw new ApiError(500, "Something went wrong while generating refresh and access tokens");
     }
 };
 
 
 export const signUp = asyncHandler(async (req, res, next) => {
-    // get user details from frontend
-    // validation - not empty
-    // check if user already exists: username, email
-    // check for images, check for avatar
-    // upload them to cloudinary, avatar
-    // create user object - create entry in db
-    // remove password and refresh token field from response
-    // check for user creation
-    // return res
-
-
     const { name, email, username, password } = req.body
-    //console.log("email: ", email);
 
     if (
         [name, email, username, password].some((field) => field?.trim() === "")
@@ -109,10 +97,12 @@ export const signIn = asyncHandler(async (req, res, next) => {
         throw new ApiError(400, "Username or email is required");
     }
 
-    const user = await User.findOne({
-        $or: [{ username }, { email }]
-    })
-
+    let user;
+    if (email) {
+        user = await User.findOne({ email });
+    } else {
+        user = await User.findOne({ username });
+    }
     if (!user) {
         throw new ApiError(404, "User does not exist");
     }
@@ -123,6 +113,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
         throw new ApiError(401, "Invalid user credentials");
     }
     console.log(user._id);
+
     const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user?._id)
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")

@@ -17,7 +17,6 @@ const Container = styled1.div`
   top: 0;
   background-color: ${({ theme }) => theme.bg};
   height: 56px;
-  
 `;
 
 const Wrapper = styled1.div`
@@ -27,7 +26,6 @@ const Wrapper = styled1.div`
   height: 100%;
   padding: 0px 20px;
   position: relative;
-  
 `;
 
 const Search = styled1.div`
@@ -43,7 +41,6 @@ const Search = styled1.div`
   border: 1px solid #ccc;
   border-radius: 3px;
   color: ${({ theme }) => theme.text};
-  
 `;
 
 const Input = styled1.input`
@@ -107,10 +104,13 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // console.log(currentUser);
+  console.log(currentUser);
+
   const handleSignOut = async () => {
     try {
-      await apiClient.post("/auth/sign-out");
+      console.log("Signing out..."); // Debug log
+      const response = await apiClient.post("/auth/sign-out");
+      console.log("Sign-out response:", response); // Debug log
       dispatch(logout());
       toast.success("LogOut Successful");
       navigate("/sign-in"); // Redirect to sign-in page or homepage after logout
@@ -119,6 +119,7 @@ export default function Navbar() {
       toast.error("Error during logout:", error);
     }
   };
+
   return (
     <>
       <Container>
@@ -146,7 +147,7 @@ export default function Navbar() {
                   src={currentUser?.data?.user?.avatar || "/default-avatar.png"}
                 />
               </Link>
-              <LoginButton onClick={handleSignOut}>
+              <LoginButton as="button" onClick={handleSignOut}>
                 <Icon>
                   <LogoutIcon />
                 </Icon>
@@ -154,7 +155,6 @@ export default function Navbar() {
                   <Text2>Sign Out</Text2>
                 </Texts>
               </LoginButton>
-              {/* <LogoutButton onClick={handleSignOut}/> */}
             </User>
           ) : (
             <Link to="sign-in" style={{ textDecoration: "none" }}>

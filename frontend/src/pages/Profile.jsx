@@ -119,6 +119,7 @@ const Profile = () => {
         // Fetch user data including video IDs
         const userRes = await apiClient.get(`/users/find/${userId}`);
         const userData = userRes.data;
+        console.log(userData);
         setUser(userData);
         setChannel(userData);
         // Fetch video details for each video ID
@@ -144,10 +145,19 @@ const Profile = () => {
   }
 
   const handleSub = async () => {
-    currentUser?.data?.user?.subscribedUsers.includes(channel._id)
-      ? await apiClient.put(`/users/unsub/${channel._id}`)
-      : await apiClient.put(`/users/sub/${channel._id}`);
-    dispatch(subscription(channel._id));
+    if (!channel._id) {
+      console.error("Channel ID is undefined");
+      return;
+    }
+
+    try {
+      currentUser.data.user.subscribedUsers.includes(channel._id)
+        ? await apiClient.put(`/users/unsub/${channel._id}`)
+        : await apiClient.put(`/users/sub/${channel._id}`);
+      dispatch(subscription(channel._id));
+    } catch (error) {
+      console.error("Error in handleSub:", error);
+    }
   };
 
   return (
@@ -188,10 +198,10 @@ const Profile = () => {
             variant="contained"
             onClick={handleSub}
             $subscribed={currentUser?.data?.user?.subscribedUsers?.includes(
-              channel._id
+              channel?._id
             )}
           >
-            {currentUser?.data?.user?.subscribedUsers?.includes(channel._id)
+            {currentUser?.data?.user?.subscribedUsers?.includes(channel?._id)
               ? "SUBSCRIBED"
               : "SUBSCRIBE"}
           </ColorButton>
