@@ -196,12 +196,7 @@ const LoginForm = () => {
         },
       });
       // Assuming your response has accessToken and refreshToken
-      const { accessToken, refreshToken } = res.data;
-
-      // Store tokens in localStorage
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      dispatch(loginSuccess(res.data.data));
+      dispatch(loginSuccess(res.data));
       toast.success("Signed Up Successful");
       navigate("/"); // Assuming res.data.data contains the user object
 

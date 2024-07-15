@@ -75,7 +75,7 @@ export default function Comments({ videoId }) {
   return (
     <Container>
       <NewComment>
-        {currentUser && <Avatar src={currentUser?.avatar} />}
+        {currentUser && <Avatar src={currentUser?.data?.user?.avatar} />}
         <Input
           placeholder="Add a comment..."
           value={newComment}

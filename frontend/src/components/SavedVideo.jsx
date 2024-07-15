@@ -21,7 +21,7 @@ export default function SavedVideo() {
     const fetchSavedVideos = async () => {
       try {
         const response = await apiClient.get(
-          `/users/${currentUser.user?._id}/savedVideos`
+          `/users/${currentUser?.data?.user?._id}/savedVideos`
         );
         setSavedVideos(response.data);
       } catch (error) {

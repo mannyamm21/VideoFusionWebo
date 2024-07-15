@@ -107,6 +107,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // console.log(currentUser);
   const handleSignOut = async () => {
     try {
       await apiClient.post("/auth/sign-out");
@@ -136,13 +137,13 @@ export default function Navbar() {
               <NotificationsNoneIcon />
               <Link
                 to={
-                  currentUser.user?._id
-                    ? `/profile/${currentUser.user?._id}`
+                  currentUser?.data?.user?._id
+                    ? `/profile/${currentUser.data.user?._id}`
                     : "#"
                 }
               >
                 <Avatar
-                  src={currentUser.user?.avatar || "/default-avatar.png"}
+                  src={currentUser?.data?.user?.avatar || "/default-avatar.png"}
                 />
               </Link>
               <LoginButton onClick={handleSignOut}>

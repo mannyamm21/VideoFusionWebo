@@ -96,7 +96,8 @@ const ChannelCard = ({
   const dispatch = useDispatch();
 
   // Check if the user is subscribed
-  const subscribed = currentUser?.subscribedUsers?.includes(channelId);
+  const subscribed =
+    currentUser?.data?.user?.subscribedUsers?.includes(channelId);
 
   const handleSub = async () => {
     try {

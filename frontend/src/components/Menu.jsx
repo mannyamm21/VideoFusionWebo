@@ -108,7 +108,7 @@ export default function Menu({ darkMode, setDarkMode }) {
         {currentUser && (
           <>
             <Link
-              to={`/savedVideos/${currentUser.user?._id}`}
+              to={`/savedVideos/${currentUser?.data?.user?._id}`}
               style={{ textDecoration: "none" }}
             >
               <Item>
@@ -172,7 +172,7 @@ export default function Menu({ darkMode, setDarkMode }) {
         </Link>
         <Hr />
         <Link
-          to={`/settings/${currentUser?._id}`}
+          to={`/settings/${currentUser?.data?.user?._id}`}
           style={{ textDecoration: "none" }}
         >
           <Item>

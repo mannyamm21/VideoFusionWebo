@@ -146,7 +146,9 @@ export default function Video() {
         );
         setChannel(channelRes.data);
         dispatch(fetchSuccess(videoRes.data));
-        setIsSaved(currentUser?.savedVideos?.includes(videoRes.data._id)); // Check saved status here
+        setIsSaved(
+          currentUser?.data?.user?.savedVideos?.includes(videoRes.data._id)
+        ); // Check saved status here
         await apiClient.put(`/videos/view/${videoRes.data._id}`); // Add view count here
       } catch (err) {
         console.log(err);
@@ -157,28 +159,26 @@ export default function Video() {
 
   const handleLike = async () => {
     await apiClient.put(`/users/like/${currentVideo._id}`);
-    dispatch(like(currentUser._id));
+    dispatch(like(currentUser?.data?.user?._id));
   };
 
   const handleDislike = async () => {
     await apiClient.put(`/users/dislike/${currentVideo._id}`);
-    dispatch(dislike(currentUser._id));
+    dispatch(dislike(currentUser?.data?.user?._id));
   };
 
   const handleSub = async () => {
-    if (currentUser.subscribedUsers?.includes(channel._id)) {
-      await apiClient.put(`/users/unsub/${channel._id}`);
-    } else {
-      await apiClient.put(`/users/sub/${channel._id}`);
-    }
+    currentUser?.data?.user?.subscribedUsers?.includes(channel.id)
+      ? await apiClient.put(`/users/unsub/${channel.id}`)
+      : await apiClient.put(`/users/sub/${channel.id}`);
     dispatch(subscription(channel._id));
   };
 
   const handleSaveVideo = async () => {
     if (!currentUser || !currentVideo) return;
 
-    const isCurrentlySaved = currentUser?.savedVideos?.includes(
-      currentVideo?._id
+    const isCurrentlySaved = currentUser?.data?.user?.savedVideos?.includes(
+      currentUser.data?.user?._id
     );
 
     if (!isCurrentlySaved) {
@@ -186,7 +186,10 @@ export default function Video() {
         await apiClient.put(`/users/savedVideos/${currentVideo?._id}`);
         // Update the saved videos list directly
         dispatch(
-          addSavedVideo([...currentUser.savedVideos, currentVideo?._id])
+          addSavedVideo([
+            ...currentUser.data.user.savedVideos,
+            currentVideo?._id,
+          ])
         );
         setIsSaved(true);
       } catch (err) {
@@ -211,7 +214,7 @@ export default function Video() {
             </Info>
             <Buttons>
               <ButtonStyled onClick={handleLike}>
-                {currentVideo?.likes?.includes(currentUser?._id) ? (
+                {currentVideo?.likes?.includes(currentUser?.data?.user?._id) ? (
                   <ThumbUpIcon />
                 ) : (
                   <ThumbUpOutlinedIcon />
@@ -219,7 +222,9 @@ export default function Video() {
                 {currentVideo?.likes?.length}
               </ButtonStyled>
               <ButtonStyled onClick={handleDislike}>
-                {currentVideo?.dislikes?.includes(currentUser?._id) ? (
+                {currentVideo?.dislikes?.includes(
+                  currentUser?.data?.user?._id
+                ) ? (
                   <ThumbDownIcon />
                 ) : (
                   <ThumbDownOffAltOutlinedIcon />
@@ -251,11 +256,11 @@ export default function Video() {
             <ColorButton
               variant="contained"
               onClick={handleSub}
-              subscribed={currentUser.user?.subscribedUsers?.includes(
+              subscribed={currentUser?.data?.user?.subscribedUsers?.includes(
                 channel?._id
               )}
             >
-              {currentUser.user?.subscribedUsers?.includes(channel?._id)
+              {currentUser?.data?.user?.subscribedUsers?.includes(channel?._id)
                 ? "SUBSCRIBED"
                 : "SUBSCRIBE"}
             </ColorButton>

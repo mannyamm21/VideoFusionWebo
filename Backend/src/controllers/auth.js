@@ -192,7 +192,7 @@ export const signOut = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: process.env.NODE_ENV === 'production', // Only set to true in production
     }
 
     return res

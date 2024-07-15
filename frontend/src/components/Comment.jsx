@@ -86,7 +86,7 @@ const Comment = ({ comment, onDelete }) => {
         <DateText>1 day ago</DateText>
         <Text>{comment?.desc}</Text>
       </Details>
-      {currentUser.user?._id === channel?._id && (
+      {currentUser?.data?.user?._id === channel?._id && (
         <DeleteButton onClick={handleDeleteComment}>
           <DeleteOutlineIcon style={{ width: "20px", height: "20px" }} />
         </DeleteButton>
