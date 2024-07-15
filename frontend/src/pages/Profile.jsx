@@ -144,7 +144,7 @@ const Profile = () => {
   }
 
   const handleSub = async () => {
-    currentUser.subscribedUsers.includes(channel._id)
+    currentUser?.user?.subscribedUsers.includes(channel._id)
       ? await apiClient.put(`/users/unsub/${channel._id}`)
       : await apiClient.put(`/users/sub/${channel._id}`);
     dispatch(subscription(channel._id));
@@ -178,7 +178,7 @@ const Profile = () => {
               </SubscribersCount>
             </UserInfo>
           </AvatarContainer>
-          {currentUser?._id === userId && (
+          {currentUser.user?._id === userId && (
             <EditIcon
               style={{ position: "absolute", top: "260px", right: "20px" }}
               onClick={() => setOpen(true)}
@@ -187,9 +187,11 @@ const Profile = () => {
           <ColorButton
             variant="contained"
             onClick={handleSub}
-            $subscribed={currentUser?.subscribedUsers?.includes(channel._id)}
+            $subscribed={currentUser.user?.subscribedUsers?.includes(
+              channel._id
+            )}
           >
-            {currentUser?.subscribedUsers?.includes(channel._id)
+            {currentUser.user?.subscribedUsers?.includes(channel._id)
               ? "SUBSCRIBED"
               : "SUBSCRIBE"}
           </ColorButton>

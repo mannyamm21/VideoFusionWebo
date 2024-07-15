@@ -59,7 +59,7 @@ export default function Comments({ videoId }) {
       const res = await apiClient.post(
         `/comment/`,
         { videoId, desc: newComment },
-        { headers: { Authorization: `Bearer ${currentUser.token}` } }
+        { headers: { Authorization: `Bearer ${currentUser.accessToken}` } }
       );
       setComments([res.data, ...comments]);
       setNewComment("");

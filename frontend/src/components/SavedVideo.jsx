@@ -3,6 +3,7 @@ import apiClient from "../apiClient";
 import Card from "./Card";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -15,11 +16,13 @@ export default function SavedVideo() {
   const { userId } = useParams();
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
-
+  const { currentUser } = useSelector((state) => state.user);
   useEffect(() => {
     const fetchSavedVideos = async () => {
       try {
-        const response = await apiClient.get(`/users/${userId}/savedVideos`);
+        const response = await apiClient.get(
+          `/users/${currentUser.user?._id}/savedVideos`
+        );
         setSavedVideos(response.data);
       } catch (error) {
         console.error("Error fetching saved videos:", error);

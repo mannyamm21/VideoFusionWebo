@@ -134,8 +134,16 @@ export default function Navbar() {
             <User>
               <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
               <NotificationsNoneIcon />
-              <Link to={currentUser?._id ? `/profile/${currentUser._id}` : "#"}>
-                <Avatar src={currentUser?.avatar || "/default-avatar.png"} />
+              <Link
+                to={
+                  currentUser.user?._id
+                    ? `/profile/${currentUser.user?._id}`
+                    : "#"
+                }
+              >
+                <Avatar
+                  src={currentUser.user?.avatar || "/default-avatar.png"}
+                />
               </Link>
               <LoginButton onClick={handleSignOut}>
                 <Icon>

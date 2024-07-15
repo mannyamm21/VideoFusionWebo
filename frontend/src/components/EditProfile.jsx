@@ -82,7 +82,7 @@ const EditProfile = ({ setOpen }) => {
     // Fetch user data and populate form fields
     const fetchUserData = async () => {
       try {
-        const userId = currentUser?._id;
+        const userId = currentUser.user?._id;
         const url = `/users/find/${userId}`;
         const response = await apiClient.get(url);
         const userData = response.data; // Assuming response.data contains user details
@@ -121,7 +121,7 @@ const EditProfile = ({ setOpen }) => {
 
   const handleSubmit = async () => {
     try {
-      const userId = currentUser?._id;
+      const userId = currentUser.user?._id;
       const url = `/users/${userId}`;
       const data = { ...formData };
 

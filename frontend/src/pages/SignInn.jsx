@@ -170,6 +170,9 @@ export default function SignInn() {
         username,
         password,
       });
+      const { accessToken, refreshToken } = res.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       dispatch(loginSuccess(res.data.data));
       navigate("/"); // Assuming res.data.data contains the user object
       console.log(res.data);

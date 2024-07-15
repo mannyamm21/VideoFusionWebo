@@ -51,7 +51,6 @@ const Text = styled.span`
 const Comment = ({ comment, onDelete }) => {
   const [channel, setChannel] = useState({});
   const { currentUser } = useSelector((state) => state.user);
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -67,7 +66,7 @@ const Comment = ({ comment, onDelete }) => {
   const handleDeleteComment = async () => {
     try {
       await apiClient.delete(`/comment/${comment?._id}`, {
-        headers: { Authorization: `Bearer ${currentUser.token}` },
+        headers: { Authorization: `Bearer ${currentUser.accessToken}` },
       });
       onDelete(comment._id);
     } catch (error) {
@@ -87,7 +86,7 @@ const Comment = ({ comment, onDelete }) => {
         <DateText>1 day ago</DateText>
         <Text>{comment?.desc}</Text>
       </Details>
-      {currentUser?._id === channel?._id && (
+      {currentUser.user?._id === channel?._id && (
         <DeleteButton onClick={handleDeleteComment}>
           <DeleteOutlineIcon style={{ width: "20px", height: "20px" }} />
         </DeleteButton>

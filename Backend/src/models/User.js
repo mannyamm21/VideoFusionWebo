@@ -1,9 +1,12 @@
 import mongoose, { Schema } from 'mongoose'
 import bcryptjs from "bcryptjs"
+import jwt from "jsonwebtoken"
 const userSchema = new Schema({
     name: {
         type: String,
         required: true,
+        trim: true,
+        index: true
     },
     username: {
         type: String,
@@ -44,6 +47,9 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    refreshToken: {
+        type: String,
+    }
 }, { timestamps: true })
 
 // Method to add video ID to user's videos array
@@ -74,5 +80,31 @@ userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcryptjs.compare(password, this.password)
 }
 
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+            username: this.username,
+            name: this.name
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: '2d'
+        }
+    )
+}
+
+userSchema.methods.generateRefreshToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: '4d'
+        }
+    )
+}
 
 export const User = mongoose.model("User", userSchema)

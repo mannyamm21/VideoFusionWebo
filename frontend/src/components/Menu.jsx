@@ -73,7 +73,6 @@ const Title = styled.h2`
 
 export default function Menu({ darkMode, setDarkMode }) {
   const { currentUser } = useSelector((state) => state.user);
-
   return (
     <Container>
       <Wrapper>
@@ -109,7 +108,7 @@ export default function Menu({ darkMode, setDarkMode }) {
         {currentUser && (
           <>
             <Link
-              to={`/savedVideos/${currentUser?._id}`}
+              to={`/savedVideos/${currentUser.user?._id}`}
               style={{ textDecoration: "none" }}
             >
               <Item>

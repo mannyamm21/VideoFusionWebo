@@ -184,18 +184,18 @@ const Settings = () => {
         <Title>Account</Title>
         <AvatarContainer>
           <Avatar>
-            <img src={currentUser?.avatar} alt="Avatar" />
+            <img src={currentUser?.user?.avatar} alt="Avatar" />
           </Avatar>
           <UserInfo>
-            <Name>{currentUser?.name}</Name>
-            <Email>{currentUser?.email}</Email>
-            <Username>@{currentUser?.username}</Username>
+            <Name>{currentUser.user?.name}</Name>
+            <Email>{currentUser.user?.email}</Email>
+            <Username>@{currentUser.user?.username}</Username>
           </UserInfo>
         </AvatarContainer>
       </Section>
       <EditProfile>
         If you want to make changes in your account.{" "}
-        <Link to={`/profile/${currentUser?._id}`}>
+        <Link to={`/profile/${currentUser.user?._id}`}>
           Edit Proflie
           <EditIcon
             style={{ position: "absolute", top: "332px", right: "1085px" }}

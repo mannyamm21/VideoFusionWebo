@@ -17,7 +17,7 @@ export const deleteComment = async (req, res, next) => {
     try {
         const comment = await Comment.findById(req.params.id);
         const video = await Video.findById(comment.videoId);
-        if (req.user.id === comment.userId.toString() || req.user.id === video.userId.toString()) {
+        if (req.user._id === comment.userId.toString() || req.user.id === video.userId.toString()) {
             await Comment.findByIdAndDelete(req.params.id);
             await Video.findByIdAndUpdate(comment.videoId, { $pull: { comments: req.params.id } });
             res.status(200).json("The comment has been deleted.");
