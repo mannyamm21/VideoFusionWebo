@@ -129,7 +129,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Only set to true in production
+        secure: true, // Only set to true in production
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000 // 1 day
     };
@@ -192,7 +192,7 @@ export const signOut = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Only set to true in production
+        secure: true, // Only set to true in production
     }
 
     return res
