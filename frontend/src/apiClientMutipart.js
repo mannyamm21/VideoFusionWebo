@@ -13,7 +13,8 @@ const apiClientMultipart = axios.create({
 
 apiClientMultipart.interceptors.request.use(
     (config) => {
-        const token = Cookies.get("accessToken"); // Adjust cookie name as necessary
+        const token = Cookies.get("accessToken");
+        console.log(token); // Adjust cookie name as necessary
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
