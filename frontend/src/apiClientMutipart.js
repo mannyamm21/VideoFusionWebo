@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Retrieve the token from local storage or a context/state management solution
 const token = localStorage.getItem('access_token') || '';
-
+console.log("Retrieved Token:", token);
 
 
 // Function to handle multipart/form-data requests

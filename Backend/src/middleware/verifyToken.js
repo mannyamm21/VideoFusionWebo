@@ -5,7 +5,12 @@ import { User } from '../models/User.js';
 
 export const verifyToken = asyncHandler(async (req, res, next) => {
     try {
-        const token = req.cookies?.access_token || req.header("Authorization")?.replace("Bearer ", "");
+        let token = req.cookies?.access_token || req.header("Authorization");
+
+        // Check if the token is from the Authorization header
+        if (token && token.startsWith("Bearer ")) {
+            token = token.split(' ')[1]; // Extract the token part after "Bearer "
+        }
 
         console.log("Token:", token); // Log the token to check its format
         if (!token) throw new ApiError(401, "Unauthorized request");
