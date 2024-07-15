@@ -124,6 +124,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
     }
     console.log(user._id);
     const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user?._id)
+
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
     const options = {
