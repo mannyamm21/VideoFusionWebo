@@ -170,6 +170,15 @@ export default function SignInn() {
         username,
         password,
       });
+      if (res.ok) {
+        // Save tokens in localStorage
+        localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("refreshToken", res.data.refreshToken);
+        console.log("User logged in successfully");
+        // Redirect or update UI
+      } else {
+        console.error(res.data.message);
+      }
       dispatch(loginSuccess(res.data));
       navigate("/"); // Assuming res.data.data contains the user object
       console.log(res.data);
