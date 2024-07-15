@@ -67,7 +67,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
     })
 
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
+        "-password"
     )
 
     if (!createdUser) {

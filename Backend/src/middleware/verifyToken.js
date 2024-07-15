@@ -5,7 +5,7 @@ import { User } from '../models/User.js';
 
 export const verifyToken = asyncHandler(async (req, res, next) => {
     try {
-        let token = req.cookies?.access_token || req.header("Authorization");
+        let token = req.cookies?.access_token || req.headers("Authorization");
 
         // Check if the token is from the Authorization header
         if (token && token.startsWith("Bearer ")) {
