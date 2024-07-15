@@ -1,7 +1,10 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import apiClient from "../apiClient";
+import { logout } from "../Context/userSlice";
+import { toast } from "react-hot-toast"; // Add this line if you're using toast notifications
+import { useState } from "react"; // Add useState for form handling
 
 const Container = styled.div`
   display: flex;
@@ -177,6 +180,65 @@ const DeleteButton = styled.button`
 
 const Settings = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
+
+  const handleDeleteAccount = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action is irreversible."
+      )
+    ) {
+      try {
+        const response = await apiClient.delete(
+          `/users/${currentUser.data.user._id}`
+        );
+
+        if (response.status === 200) {
+          toast.success("Account deleted successfully."); // Add this line if you're using toast notifications
+          dispatch(logout());
+          navigate("/sign-in");
+        } else {
+          toast.error("Failed to delete the account."); // Add this line if you're using toast notifications
+        }
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        toast.error("An error occurred while deleting the account."); // Add this line if you're using toast notifications
+      }
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const response = await apiClient.post(`/users/changepassword/${path}`, {
+        oldPassword,
+        newPassword,
+        confirmPassword,
+      });
+
+      if (response.status === 200) {
+        toast.success("Password changed successfully.");
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        toast.error("Failed to change the password.");
+      }
+    } catch (error) {
+      console.error("Error changing password:", error.message);
+      toast.error("An error occurred while changing the password.");
+    }
+  };
 
   return (
     <Container>
@@ -196,10 +258,7 @@ const Settings = () => {
       <EditProfile>
         If you want to make changes in your account.{" "}
         <Link to={`/profile/${currentUser?.data?.user?._id}`}>
-          Edit Proflie
-          <EditIcon
-            style={{ position: "absolute", top: "332px", right: "1085px" }}
-          />
+          Edit Profile
         </Link>
       </EditProfile>
       <Section>
@@ -211,6 +270,8 @@ const Settings = () => {
             id="oldPassword"
             name="oldPassword"
             placeholder="Enter old password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
           />
         </InputGroup>
         <InputGroup>
@@ -220,14 +281,27 @@ const Settings = () => {
             id="newPassword"
             name="newPassword"
             placeholder="Enter new password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
         </InputGroup>
-        <SaveButton>Save Changes</SaveButton>
+        <InputGroup>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </InputGroup>
+        <SaveButton onClick={handleChangePassword}>Save Changes</SaveButton>
       </Section>
       <Section>
         <Title>Delete Account</Title>
         <EditProfile>If you want to delete the account.</EditProfile>
-        <DeleteButton>
+        <DeleteButton onClick={handleDeleteAccount}>
           <span className="button__text">Delete</span>
           <span className="button__icon">
             <svg

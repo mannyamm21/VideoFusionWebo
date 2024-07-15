@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, dislike, getUser, like, subscribe, unsubscribe, updateUser, updateUserAvatar, updateUserCoverImage, search, saveVideo, unsaveVideo, getSavedVideos } from '../controllers/user.js'
+import { deleteUser, dislike, getUser, like, subscribe, unsubscribe, changeCurrentPassword, updateUser, updateUserAvatar, updateUserCoverImage, search, saveVideo, unsaveVideo, getSavedVideos } from '../controllers/user.js'
 import { verifyToken } from "../middleware/verifyToken.js";
 import { upload } from "../middleware/multer.middleware.js"
 const router = Router();
@@ -27,6 +27,7 @@ router.put("/dislike/:videoId", verifyToken, dislike)
 
 router.get("/search", search)
 
+router.post("/changepassword/:id", verifyToken, changeCurrentPassword)
 // Save video route
 router.put('/savedVideos/:videoId', verifyToken, saveVideo);
 router.put('/unsavedVideos/:videoId', verifyToken, unsaveVideo);

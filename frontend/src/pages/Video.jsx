@@ -131,8 +131,8 @@ export default function Video() {
   const { currentVideo } = useSelector((state) => state.video);
   const dispatch = useDispatch();
   const location = useLocation();
-  const [open, setOpen] = useState(false); // State for the modal
   const path = location.pathname.split("/")[2];
+  const [open, setOpen] = useState(false); // State for the modal
   const [channel, setChannel] = useState({});
   const [isSaved, setIsSaved] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);

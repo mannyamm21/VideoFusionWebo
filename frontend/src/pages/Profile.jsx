@@ -210,7 +210,7 @@ const Profile = () => {
         <SectionTitle>Uploaded Videos</SectionTitle>
         <VideoContainer>
           {Array.isArray(videos) &&
-            videos.map((video) => <Card key={video._id} video={video} />)}
+            videos.map((video) => <Card key={video?._id} video={video} />)}
         </VideoContainer>
       </Container>
       {open && <EditProfile setOpen={setOpen} />}

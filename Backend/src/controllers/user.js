@@ -233,3 +233,39 @@ export const getSavedVideos = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+export const changeCurrentPassword = asyncHandler(async (req, res) => {
+    try {
+        const userId = req.user._id; // Ensure you get the user ID from the authenticated user
+        const { oldPassword, newPassword, confirmPassword } = req.body;
+
+        if (!newPassword || !confirmPassword || !oldPassword) {
+            throw new ApiError(400, "Please provide all required fields.");
+        }
+
+        if (newPassword !== confirmPassword) {
+            throw new ApiError(400, "Passwords do not match.");
+        }
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            throw new ApiError(404, "User not found.");
+        }
+
+        const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+
+        if (!isPasswordCorrect) {
+            throw new ApiError(400, "Invalid old password.");
+        }
+
+        user.password = newPassword;
+        await user.save({ validateBeforeSave: false });
+
+        return res.status(200).json(new ApiResponse(200, { user }, "Password changed successfully."));
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, error.message);
+    }
+});
