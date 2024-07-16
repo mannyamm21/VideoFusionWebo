@@ -168,23 +168,6 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
 });
 
 export const signOut = asyncHandler(async (req, res, next) => {
-    await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $unset: {
-                refreshToken: 1 // this removes the field from document
-            }
-        },
-        {
-            new: true
-        }
-    )
-
-    const options = {
-        httpOnly: true,
-        secure: true, // Only set to true in production
-    }
-
     return res
         .status(200)
         .clearCookie("accessToken", options)
