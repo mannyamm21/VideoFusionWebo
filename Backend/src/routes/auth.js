@@ -22,7 +22,7 @@ router.route("/sign-up").post(
 router.post("/sign-in", signIn)
 
 // Sign - Out a user
-router.post("/sign-out", verifyToken, signOut)
+router.post("/sign-out", signOut)
 
 // Log though google a user
 router.post("/google", googleAuth)
