@@ -1,13 +1,21 @@
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
-// import axios from "axios";
 import apiClient from "../apiClient";
 
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  padding: 20px;
+
+  @media (max-width: 1200px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 export default function Home({ type = "random" }) {

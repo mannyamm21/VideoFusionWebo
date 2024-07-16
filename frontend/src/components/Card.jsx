@@ -1,14 +1,21 @@
+// Card.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { format } from "timeago.js";
 import apiClient from "../apiClient";
+
 const Container = styled.div`
   width: ${(props) => (props.type !== "sm" ? "360px" : "100%")};
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "25px")};
   cursor: pointer;
   display: ${(props) => (props.type === "sm" ? "flex" : "block")};
   gap: 10px;
+
+  @media (max-width: 768px) {
+    width: 100%; // Full width on small screens
+    flex-direction: column; // Stack elements vertically
+  }
 `;
 
 const Image = styled.img`
@@ -24,6 +31,11 @@ const Details = styled.div`
   margin-top: ${(props) => (props.type !== "sm" ? "16px" : "0")};
   gap: 12px;
   flex: 1;
+
+  @media (max-width: 768px) {
+    flex-direction: column; // Stack details on small screens
+    margin-top: 10px; // Adjust top margin
+  }
 `;
 
 const ChannelImage = styled.img`
@@ -32,6 +44,10 @@ const ChannelImage = styled.img`
   border-radius: 50%;
   background-color: #999;
   display: ${(props) => (props.type === "sm" ? "none" : "block")};
+
+  @media (max-width: 768px) {
+    display: block; // Show channel image on small screens
+  }
 `;
 
 const Texts = styled.div``;

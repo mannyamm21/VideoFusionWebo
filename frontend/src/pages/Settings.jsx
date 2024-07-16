@@ -10,29 +10,21 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-`;
 
-const Section = styled.div`
-  margin-bottom: 30px;
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  color: ${({ theme }) => theme.text};
-  margin-bottom: 10px;
-  border-bottom: 2px solid ${({ theme }) => theme.soft};
-  padding-bottom: 5px;
-`;
-
-const Hr = styled.hr`
-  margin: 20px 0;
-  border: 0.5px solid ${({ theme }) => theme.soft};
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const AvatarContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Avatar = styled.div`
@@ -47,23 +39,99 @@ const Avatar = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 `;
 
-const UserInfo = styled.div`
+const SaveButton = styled.button`
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2cb5a0;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #249f8f;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const DeleteButton = styled.button`
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  border: 1px solid #cc0000;
+  background-color: #ff3131;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: all 0.3s;
+
+  .button__text {
+    transform: translateX(35px);
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+`;
+
+const Title = styled.h1`
+  font-size: 24px;
+  color: ${({ theme }) => theme.text};
+  margin-bottom: 10px;
+  border-bottom: 2px solid ${({ theme }) => theme.soft};
+  padding-bottom: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+
+const Section = styled.div`
+  margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Username = styled.p`
   font-size: 15px;
   color: ${({ theme }) => theme.textSoft};
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const Name = styled.h2`
   font-size: 24px;
   margin: 0;
   color: ${({ theme }) => theme.text};
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Email = styled.p`
@@ -100,80 +168,6 @@ const InputGroup = styled.div`
 
     &:focus {
       border-color: rgba(167, 139, 250, 1);
-    }
-  }
-`;
-
-const SaveButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #2cb5a0;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #249f8f;
-  }
-`;
-
-const DeleteButton = styled.button`
-  position: relative;
-  width: 150px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border: 1px solid #cc0000;
-  background-color: #ff3131;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: all 0.3s;
-
-  .button__text {
-    transform: translateX(35px);
-    color: #fff;
-    font-weight: 600;
-    transition: all 0.3s;
-  }
-
-  .button__icon {
-    position: absolute;
-    transform: translateX(109px);
-    height: 100%;
-    width: 39px;
-    background-color: #cc0000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-
-    .svg {
-      width: 20px;
-    }
-  }
-
-  &:hover {
-    background: #cc0000;
-
-    .button__text {
-      color: transparent;
-    }
-
-    .button__icon {
-      width: 148px;
-      transform: translateX(0);
-    }
-  }
-
-  &:active {
-    border: 1px solid #b20000;
-
-    .button__icon {
-      background-color: #b20000;
     }
   }
 `;

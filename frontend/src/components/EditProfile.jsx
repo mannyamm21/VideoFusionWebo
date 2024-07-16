@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import FileUploader from "./FileUploader";
 import apiClientMultipart from "../apiClientMutipart";
+import { toast } from "react-hot-toast";
 
 const Button1 = styled.button`
   border-radius: 3px;
@@ -47,7 +48,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   position: relative;
-  overflow-y: auto; /* Add this to enable scrolling within the wrapper */
+  overflow-y: auto;
 `;
 
 const Title = styled.h1`
@@ -85,7 +86,7 @@ const EditProfile = ({ setOpen }) => {
         const userId = currentUser?.data?.user?._id;
         const url = `/users/find/${userId}`;
         const response = await apiClient.get(url);
-        const userData = response.data; // Assuming response.data contains user details
+        const userData = response.data;
 
         // Populate form data
         setFormData({
@@ -96,6 +97,7 @@ const EditProfile = ({ setOpen }) => {
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to fetch user data. Please try again.");
+        toast.error("Failed to fetch user data. Please try again.");
       }
     };
 
@@ -105,13 +107,13 @@ const EditProfile = ({ setOpen }) => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     setAvatarFile(file);
-    setAvatarFileName(file.name); // Update avatar file name for display
+    setAvatarFileName(file.name);
   };
 
   const handleCoverChange = (e) => {
     const file = e.target.files[0];
     setCoverFile(file);
-    setCoverFileName(file.name); // Update cover file name for display
+    setCoverFileName(file.name);
   };
 
   const handleInputChange = (e) => {
@@ -133,7 +135,7 @@ const EditProfile = ({ setOpen }) => {
           `/users/avatar/${userId}`,
           avatarFormData
         );
-        data.avatarUrl = avatarResponse.data.avatarUrl; // Assuming the response contains the URL of the uploaded avatar
+        data.avatarUrl = avatarResponse.data.avatarUrl;
       }
 
       // Update cover image if selected
@@ -144,67 +146,67 @@ const EditProfile = ({ setOpen }) => {
           `/users/coverImage/${userId}`,
           coverFormData
         );
-        data.coverImageUrl = coverResponse.data.coverImageUrl; // Assuming the response contains the URL of the uploaded cover image
+        data.coverImageUrl = coverResponse.data.coverImageUrl;
       }
 
       // Update user details (name, username, email)
       const response = await apiClient.put(url, data);
       console.log("Profile updated:", response.data);
       setOpen(false);
+      toast.success("Profile updated successfully.");
     } catch (error) {
       console.error("Failed to update profile:", error);
       setError("Failed to update profile. Please try again.");
+      toast.error("Failed to update profile. Please try again.");
     }
   };
 
   return (
-    <>
-      <Container>
-        <Wrapper>
-          <Title>Edit Your Profile</Title>
-          <Close onClick={() => setOpen(false)}>
-            <CloseIcon />
-          </Close>
-          <Input
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-          <Input
-            type="text"
-            placeholder="Username"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-          />
-          <Input
-            type="text"
-            placeholder={formData.email}
-            name="email"
-            onChange={handleInputChange}
-            disabled
-          />
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          <FileUploader
-            name={"Avatar Image"}
-            id="avatarFile"
-            fileName={avatarFileName}
-            onChange={handleAvatarChange}
-          />
-          <FileUploader
-            name={"Cover Image"}
-            id="coverFile"
-            fileName={coverFileName}
-            onChange={handleCoverChange}
-          />
-          <Button1 onClick={handleSubmit} variant="contained">
-            Save
-          </Button1>
-        </Wrapper>
-      </Container>
-    </>
+    <Container>
+      <Wrapper>
+        <Title>Edit Your Profile</Title>
+        <Close onClick={() => setOpen(false)}>
+          <CloseIcon />
+        </Close>
+        <Input
+          type="text"
+          placeholder="Name"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
+        <Input
+          type="text"
+          placeholder="Username"
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+        />
+        <Input
+          type="text"
+          placeholder={formData.email}
+          name="email"
+          onChange={handleInputChange}
+          disabled
+        />
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <FileUploader
+          name={"Avatar Image"}
+          id="avatarFile"
+          fileName={avatarFileName}
+          onChange={handleAvatarChange}
+        />
+        <FileUploader
+          name={"Cover Image"}
+          id="coverFile"
+          fileName={coverFileName}
+          onChange={handleCoverChange}
+        />
+        <Button1 onClick={handleSubmit} variant="contained">
+          Save
+        </Button1>
+      </Wrapper>
+    </Container>
   );
 };
 

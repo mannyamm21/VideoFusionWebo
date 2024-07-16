@@ -1,36 +1,40 @@
 import { useEffect, useState } from "react";
-import styled1 from "styled-components";
+import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 import EditIcon from "@mui/icons-material/Edit";
 import EditProfile from "../components/EditProfile";
-import { styled } from "@mui/material/styles";
+import { styled as muiStyled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { subscription } from "../Context/userSlice";
 import apiClient from "../apiClient";
-const Container = styled1.div`
+
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  @media (max-width: 768px) {
+    padding: 10px; // Adjust padding for smaller screens
+  }
 `;
 
-const Header = styled1.div`
+const Header = styled.div`
   position: relative;
   margin-bottom: 20px;
   color: ${({ theme }) => theme.text};
 `;
 
-const CoverImage = styled1.img`
+const CoverImage = styled.img`
   width: 100%;
   max-height: 200px;
   object-fit: cover;
 `;
 
-const AvatarContainer = styled1.div`
+const AvatarContainer = styled.div`
   position: absolute;
-  top: calc(100% + 80px); /* Positioned at least 80px below the cover image */
+  top: calc(100% + 80px);
   left: 20px;
   transform: translateY(-50%);
   display: flex;
@@ -38,36 +42,36 @@ const AvatarContainer = styled1.div`
   color: ${({ theme }) => theme.text};
 `;
 
-const Avatar = styled1.img`
+const Avatar = styled.img`
   width: 130px;
   height: 130px;
   border-radius: 50%;
 `;
 
-const UserInfo = styled1.div`
-  margin-left: 70px; /* Adjusted margin to separate user info from avatar */
+const UserInfo = styled.div`
+  margin-left: 70px;
   display: flex;
   flex-direction: column;
 `;
 
-const Username = styled1.p`
+const Username = styled.p`
   font-size: 15px;
   margin-bottom: 10px;
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const Name = styled1.h2`
+const Name = styled.h2`
   font-size: 24px;
   margin-bottom: 1px;
   color: ${({ theme }) => theme.text};
 `;
 
-const SubscribersCount = styled1.p`
+const SubscribersCount = styled.p`
   font-size: 14px;
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const SectionTitle = styled1.h3`
+const SectionTitle = styled.h3`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -75,23 +79,21 @@ const SectionTitle = styled1.h3`
   font-weight: 500;
   color: ${({ theme }) => theme.text};
   margin-bottom: 10px;
-  margin-top: 180px; /* Added margin-top to create space below AvatarContainer */
+  margin-top: 180px;
 `;
 
-const VideoContainer = styled1.div`
+const VideoContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 `;
 
-const Hr = styled1.hr`
+const Hr = styled.hr`
   margin: 15px 0px;
   border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
-const ColorButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== "$subscribed",
-})(({ theme, $subscribed }) => ({
+const ColorButton = muiStyled(Button)(({ theme, $subscribed }) => ({
   color: theme.palette.getContrastText($subscribed ? grey[500] : red[900]),
   backgroundColor: $subscribed ? grey[500] : red[800],
   "&:hover": {
@@ -101,11 +103,18 @@ const ColorButton = styled(Button, {
   position: "absolute",
   top: "300px",
   right: "20px",
-  // Add margin-top to place below the edit button
+}));
+
+// Add media query separately
+const ResponsiveColorButton = muiStyled(ColorButton)(({ theme }) => ({
+  "@media (max-width: 768px)": {
+    top: "250px",
+    right: "10px",
+  },
 }));
 
 const Profile = () => {
-  const { userId } = useParams(); // Extract userId from URL parameters
+  const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [videos, setVideos] = useState([]);
   const [open, setOpen] = useState(false);
@@ -116,20 +125,15 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Fetch user data including video IDs
         const userRes = await apiClient.get(`/users/find/${userId}`);
         const userData = userRes.data;
-        console.log(userData);
         setUser(userData);
         setChannel(userData);
-        // Fetch video details for each video ID
         const videoIds = userData.videos;
         const videoPromises = videoIds.map((id) =>
           apiClient.get(`/videos/find/${id}`)
         );
         const videoResults = await Promise.all(videoPromises);
-
-        // Extract video data from responses
         const videosData = videoResults.map((res) => res.data);
         setVideos(videosData);
       } catch (error) {
@@ -138,7 +142,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, [userId]); // Re-fetch data when userId changes
+  }, [userId]);
 
   if (!user) {
     return <p>Loading...</p>;
@@ -194,7 +198,7 @@ const Profile = () => {
               onClick={() => setOpen(true)}
             />
           )}
-          <ColorButton
+          <ResponsiveColorButton
             variant="contained"
             onClick={handleSub}
             $subscribed={currentUser?.data?.user?.subscribedUsers?.includes(
@@ -204,7 +208,7 @@ const Profile = () => {
             {currentUser?.data?.user?.subscribedUsers?.includes(channel?._id)
               ? "SUBSCRIBED"
               : "SUBSCRIBE"}
-          </ColorButton>
+          </ResponsiveColorButton>
         </Header>
 
         <SectionTitle>Uploaded Videos</SectionTitle>

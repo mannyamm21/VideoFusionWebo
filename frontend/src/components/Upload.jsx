@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import categories from "../lib/utils/categories";
 import CloseIcon from "@mui/icons-material/Close";
 import FileUploader from "./FileUploader";
+import { toast } from "react-hot-toast";
 
 const Container = styled.div`
   width: 100%;
@@ -142,12 +143,14 @@ export default function Upload({ setOpen }) {
       },
       (error) => {
         console.log(error);
+        toast.error("File upload failed. Please try again.");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setInputs((prev) => {
             return { ...prev, [urlType]: downloadURL };
           });
+          toast.success("File uploaded successfully.");
         });
       }
     );
@@ -180,10 +183,12 @@ export default function Upload({ setOpen }) {
       });
       setOpen(false);
       if (res.status === 200) {
+        toast.success("Video uploaded successfully.");
         navigate(`video/${res.data._id}`);
       }
     } catch (error) {
       console.error("Error uploading video:", error);
+      toast.error("Error uploading video. Please try again.");
     }
   };
 

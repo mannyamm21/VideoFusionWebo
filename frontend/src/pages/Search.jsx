@@ -12,6 +12,11 @@ const Container = styled.div`
   gap: 10px;
 `;
 
+const Hr = styled.hr`
+  margin: 15px 0px;
+  border: 0.5px solid ${({ theme }) => theme.soft};
+`;
+
 export default function Search() {
   const [videos, setVideos] = useState([]);
   const [users, setUsers] = useState([]);
@@ -50,7 +55,8 @@ export default function Search() {
           subscriber={user.subscribers}
         />
       ))}
-      <div></div>
+      <div>{"      "}</div>
+      <Hr />
       {users.map((user) =>
         user.videos.map((video) => <VideoCard key={video} videoId={video} />)
       )}

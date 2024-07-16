@@ -132,7 +132,7 @@ export default function Navbar() {
             />
             <SearchOutlinedIcon onClick={() => navigate(`/search?q=${q}`)} />
           </Search>
-          {currentUser?.data?.user?._id !== null ? (
+          {currentUser ? (
             <User>
               <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
               <NotificationsNoneIcon />

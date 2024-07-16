@@ -10,6 +10,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
 import apiClient from "../apiClient";
 import { toast } from "react-hot-toast";
+
 const Container = styled1.div`
   display: flex;
   flex-direction: column;
@@ -17,19 +18,25 @@ const Container = styled1.div`
   justify-content: center;
   height: calc(100vh - 56px);
   color: ${({ theme }) => theme.text};
+  padding: 20px; // Add padding for small screens
 `;
 
 const FormContainer = styled1.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 420px;
+  width: 90%; // Use a percentage for better responsiveness
+  max-width: 420px;
   border-radius: 0.75rem;
   background-color: ${({ theme }) => theme.bg};
   border: 1px solid ${({ theme }) => theme.soft};
-  padding: 20px 50px;
+  padding: 20px 30px; // Adjust padding for smaller screens
   gap: 10px;
   color: ${({ theme }) => theme.textSoft};
+
+  @media (max-width: 768px) {
+    padding: 15px 20px; // Reduce padding for smaller screens
+  }
 `;
 
 const Title = styled1.p`
@@ -37,6 +44,10 @@ const Title = styled1.p`
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem; // Adjust font size for smaller screens
+  }
 `;
 
 const Form = styled1.form`
@@ -99,6 +110,10 @@ const Button1 = styled1.button`
   border: none;
   border-radius: 0.375rem;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    padding: 0.65rem; // Slightly reduce padding for smaller screens
+  }
 `;
 
 const SocialMessage = styled1.div`
@@ -108,7 +123,7 @@ const SocialMessage = styled1.div`
 
   .line {
     height: 1px;
-    flex: 1 1 0%;
+    flex: 1;
     background-color: ${({ theme }) => theme.soft};
   }
 
@@ -123,6 +138,7 @@ const SocialMessage = styled1.div`
 const SocialIcons = styled1.div`
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 
   .icon {
     border-radius: 0.125rem;
@@ -131,12 +147,6 @@ const SocialIcons = styled1.div`
     color: ${({ theme }) => theme.bg};
     background-color: transparent;
     margin-left: 8px;
-
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
-      fill: #fff;
-    }
   }
 `;
 
@@ -171,18 +181,17 @@ export default function SignInn() {
         password,
       });
       if (res.ok) {
-        // Save tokens in localStorage
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
         console.log("User logged in successfully");
         // Redirect or update UI
       } else {
         console.error(res.data.message);
       }
       dispatch(loginSuccess(res.data));
+      toast.success("Login Successful");
       navigate("/"); // Assuming res.data.data contains the user object
       console.log(res.data);
     } catch (error) {
+      toast.error("An error occurred during login. Please try again.");
       dispatch(loginFailure());
     }
   };

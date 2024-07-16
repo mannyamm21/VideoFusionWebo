@@ -1,6 +1,6 @@
 // Video.jsx
 import { useState, useEffect } from "react";
-import styled1 from "styled-components";
+import styled1, { css } from "styled-components";
 import Recommendation from "../components/Recommendation";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
@@ -19,19 +19,27 @@ import { red, grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import ShareModal from "../components/ShareModal";
 import apiClient from "../apiClient";
+import { toast, Toaster } from "react-hot-toast";
 
 const Container = styled1.div`
   display: flex;
+  flex-direction: column;
   gap: 24px;
   padding: 20px;
   overflow-y: auto;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Content = styled1.div`
   flex: 5;
 `;
 
-const VideoWrapper = styled1.div``;
+const VideoWrapper = styled1.div`
+  width: 100%;
+`;
 
 const Title = styled1.h1`
   font-size: 18px;
@@ -43,8 +51,14 @@ const Title = styled1.h1`
 
 const Details = styled1.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const Info = styled1.span`
@@ -55,6 +69,11 @@ const Buttons = styled1.div`
   display: flex;
   gap: 20px;
   color: ${({ theme }) => theme.text};
+  margin-top: 10px;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
 `;
 
 const ButtonStyled = styled1.div`
@@ -71,7 +90,14 @@ const Hr = styled1.hr`
 
 const Channel = styled1.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const ChannelInfo = styled1.div`
@@ -196,8 +222,10 @@ export default function Video() {
           ])
         );
         setIsSaved(true);
+        toast.success("Video saved successfully!");
       } catch (err) {
         console.error("Error saving video:", err);
+        toast.error("Failed to save video.");
       }
     } else {
       console.log("Video already saved");
@@ -206,6 +234,7 @@ export default function Video() {
 
   return (
     <Container>
+      <Toaster />
       {currentVideo ? (
         <Content>
           <VideoWrapper>
