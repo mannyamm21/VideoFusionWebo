@@ -103,9 +103,6 @@ export default function Navbar() {
   const [q, setQ] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  console.log(currentUser);
-
   const handleSignOut = async () => {
     try {
       console.log("Signing out..."); // Debug log

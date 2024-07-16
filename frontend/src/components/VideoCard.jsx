@@ -65,7 +65,7 @@ const VideoCard = ({ type, videoId }) => {
         setVideo(videoRes.data);
 
         // Then fetch the channel based on the video userId
-        if (videoRes.data.userId) {
+        if (videoRes?.data?.userId) {
           const channelRes = await apiClient.get(
             `/users/find/${videoRes.data.userId}`
           );

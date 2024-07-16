@@ -120,20 +120,19 @@ export const signIn = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: true, // Only set to true in production
+        secure: true, // only true in production
+        sameSite: 'None', // crucial for cross-site requests
         maxAge: 24 * 60 * 60 * 1000 // 1 day
     };
-
 
     return res.status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .json(
-            new ApiResponse(200, {
-                user: loggedInUser, accessToken,
-                refreshToken
-            }, "User logged in Successfully")
-        )
+        .json(new ApiResponse(200, {
+            user: loggedInUser, accessToken,
+            refreshToken
+        }, "User logged in Successfully"));
+
 });
 
 
