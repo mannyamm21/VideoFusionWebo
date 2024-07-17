@@ -10,6 +10,8 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
 import { toast } from "react-hot-toast";
 import apiClientMultipart from "../apiClientMutipart";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const Container = styled1.div`
   display: flex;
@@ -18,24 +20,24 @@ const Container = styled1.div`
   justify-content: center;
   height: calc(100vh - 56px);
   color: ${({ theme }) => theme.text};
-  padding: 20px; // Add padding for small screens
+  padding: 20px;
 `;
 
 const FormContainer = styled1.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 90%; // Use a percentage for better responsiveness
+  width: 90%;
   max-width: 420px;
   border-radius: 0.75rem;
   background-color: ${({ theme }) => theme.bg};
   border: 1px solid ${({ theme }) => theme.soft};
-  padding: 20px 30px; // Adjust padding for smaller screens
+  padding: 20px 30px;
   gap: 10px;
   color: ${({ theme }) => theme.textSoft};
 
   @media (max-width: 768px) {
-    padding: 15px 20px; // Reduce padding for smaller screens
+    padding: 15px 20px;
   }
 `;
 
@@ -46,7 +48,7 @@ const Title = styled1.p`
   font-weight: 700;
 
   @media (max-width: 768px) {
-    font-size: 1.25rem; // Adjust font size for smaller screens
+    font-size: 1.25rem;
   }
 `;
 
@@ -79,6 +81,13 @@ const InputGroup = styled1.div`
       border-color: rgba(167, 139, 250, 1);
     }
   }
+
+  .visibility-icon {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 25%;
+  }
 `;
 
 const Button1 = styled1.button`
@@ -93,46 +102,7 @@ const Button1 = styled1.button`
   font-weight: 600;
 
   @media (max-width: 768px) {
-    padding: 0.65rem; // Slightly reduce padding for smaller screens
-  }
-`;
-
-const SocialMessage = styled1.div`
-  display: flex;
-  align-items: center;
-  padding-top: 1rem;
-
-  .line {
-    height: 1px;
-    flex: 1;
-    background-color: ${({ theme }) => theme.soft};
-  }
-
-  .message {
-    padding: 0 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: ${({ theme }) => theme.textSoft};
-  }
-`;
-
-const SocialIcons = styled1.div`
-  display: flex;
-  justify-content: center;
-
-  .icon {
-    border-radius: 0.125rem;
-    padding: 0.75rem;
-    border: none;
-    color: ${({ theme }) => theme.bg};
-    background-color: transparent;
-    margin-left: 8px;
-
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
-      fill: #fff;
-    }
+    padding: 0.65rem;
   }
 `;
 
@@ -163,13 +133,14 @@ const VisuallyHiddenInput = styled1.input`
   white-space: nowrap;
   width: 1px;
 `;
-// Main Login Form Component
+
 const LoginForm = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatarFile, setAvatarFile] = useState(null); // Changed from string to file object
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -185,15 +156,11 @@ const LoginForm = () => {
       }
 
       const res = await apiClientMultipart.post("/auth/sign-up", formData);
-      // Assuming your response has accessToken and refreshToken
       dispatch(loginSuccess(res.data.data));
       toast.success("Signed Up Successfully");
-
-      console.log("User signed up successfully:", res.data.data);
-      navigate("/sign-in"); // Navigate to the home page after successful signup
+      navigate("/sign-in");
     } catch (error) {
       dispatch(loginFailure());
-      console.error("Failed to sign up:", error);
       toast.error("An error occurred during signup. Please try again.");
     }
   };
@@ -237,12 +204,20 @@ const LoginForm = () => {
           </InputGroup>
           <InputGroup>
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span
+                className="visibility-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </span>
+            </div>
           </InputGroup>
           <Button
             component="label"

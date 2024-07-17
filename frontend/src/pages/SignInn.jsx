@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import apiClient from "../apiClient";
 import { toast } from "react-hot-toast";
 
@@ -18,25 +20,21 @@ const Container = styled1.div`
   justify-content: center;
   height: calc(100vh - 56px);
   color: ${({ theme }) => theme.text};
-  padding: 20px; // Add padding for small screens
+  padding: 20px;
 `;
 
 const FormContainer = styled1.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 90%; // Use a percentage for better responsiveness
+  width: 90%;
   max-width: 420px;
   border-radius: 0.75rem;
   background-color: ${({ theme }) => theme.bg};
   border: 1px solid ${({ theme }) => theme.soft};
-  padding: 20px 30px; // Adjust padding for smaller screens
+  padding: 20px 30px;
   gap: 10px;
   color: ${({ theme }) => theme.textSoft};
-
-  @media (max-width: 768px) {
-    padding: 15px 20px; // Reduce padding for smaller screens
-  }
 `;
 
 const Title = styled1.p`
@@ -44,10 +42,6 @@ const Title = styled1.p`
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 1.25rem; // Adjust font size for smaller screens
-  }
 `;
 
 const Form = styled1.form`
@@ -78,6 +72,13 @@ const InputGroup = styled1.div`
     &:focus {
       border-color: rgba(167, 139, 250, 1);
     }
+  }
+
+  .visibility-icon {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 25%;
   }
 `;
 
@@ -110,10 +111,6 @@ const Button1 = styled1.button`
   border: none;
   border-radius: 0.375rem;
   font-weight: 600;
-
-  @media (max-width: 768px) {
-    padding: 0.65rem; // Slightly reduce padding for smaller screens
-  }
 `;
 
 const SocialMessage = styled1.div`
@@ -169,6 +166,7 @@ const SignupText = styled1.p`
 export default function SignInn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -176,26 +174,17 @@ export default function SignInn() {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await apiClient.post("/auth/sign-in", {
-        username,
-        password,
-      });
+      const res = await apiClient.post("/auth/sign-in", { username, password });
       if (res.data.success) {
-        const { accessToken } = res.data.data; // Adjust according to your actual response structure
+        const { accessToken } = res.data.data;
         localStorage.setItem("accessToken", accessToken);
-        // Save the entire user data if needed
         localStorage.setItem("persist:root", JSON.stringify(res.data));
-        console.log("User logged in successfully");
         dispatch(loginSuccess(res.data));
         toast.success("Login Successful");
         navigate("/");
       } else {
         console.error(res.data.message);
       }
-      dispatch(loginSuccess(res.data));
-      toast.success("Login Successful");
-      navigate("/"); // Assuming res.data.data contains the user object
-      console.log(res.data);
     } catch (error) {
       toast.error("An error occurred during login. Please try again.");
       dispatch(loginFailure());
@@ -212,9 +201,8 @@ export default function SignInn() {
       });
 
       if (res.data.success) {
-        const { accessToken } = res.data.data; // Adjust according to your actual response structure
+        const { accessToken } = res.data.data;
         localStorage.setItem("accessToken", accessToken);
-        // Save the entire user data if needed
         localStorage.setItem("persist:root", JSON.stringify(res.data));
         dispatch(loginSuccess(res.data));
         toast.success("Login Successful");
@@ -246,12 +234,20 @@ export default function SignInn() {
           </InputGroup>
           <InputGroup>
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span
+                className="visibility-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </span>
+            </div>
             <ForgotPassword>
               <Link rel="noopener noreferrer" to="#">
                 Forgot Password?
@@ -276,7 +272,7 @@ export default function SignInn() {
           <GitHubIcon style={{ marginRight: "15px", marginLeft: "15px" }} />
         </SocialIcons>
         <SignupText>
-          Dont have an account? <Link to="/sign-up">Sign Up</Link>
+          Dontt have an account? <Link to="/sign-up">Sign Up</Link>
         </SignupText>
       </FormContainer>
     </Container>

@@ -234,18 +234,25 @@ const Settings = () => {
     }
   };
 
+  const defaultAvatar =
+    "https://t3.ftcdn.net/jpg/01/77/54/02/360_F_177540231_SkxuDjyo8ECrPumqf0aeMbean2Ai1aOK.jpg";
   return (
     <Container>
       <Section>
         <Title>Account</Title>
         <AvatarContainer>
           <Avatar>
-            <img src={currentUser?.data?.user?.avatar} alt="Avatar" />
+            <img
+              src={currentUser?.data?.user?.avatar || defaultAvatar}
+              alt="Avatar"
+            />
           </Avatar>
           <UserInfo>
-            <Name>{currentUser?.data?.user?.name}</Name>
-            <Email>{currentUser?.data?.user?.email}</Email>
-            <Username>@{currentUser?.data?.user?.username}</Username>
+            <Name>{currentUser?.data?.user?.name || "Account Name"}</Name>
+            <Email>{currentUser?.data?.user?.email || "User Email"}</Email>
+            <Username>
+              @{currentUser?.data?.user?.username || "Username"}
+            </Username>
           </UserInfo>
         </AvatarContainer>
       </Section>
@@ -255,7 +262,7 @@ const Settings = () => {
           Edit Profile
         </Link>
       </EditProfile>
-      {currentUser.data.user.fromGoogle === false ? (
+      {currentUser?.data?.user.fromGoogle === false ? (
         <Section>
           <Title>Change Password</Title>
           <InputGroup>
