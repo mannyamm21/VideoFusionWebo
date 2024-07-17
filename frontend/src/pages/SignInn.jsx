@@ -146,7 +146,7 @@ const SocialIcons = styled1.div`
     border: none;
     color: ${({ theme }) => theme.bg};
     background-color: transparent;
-    margin-left: 8px;
+    margin-left: 4px;
   }
 `;
 
@@ -204,27 +204,30 @@ export default function SignInn() {
 
   const signInWithGoogle = async () => {
     dispatch(loginStart());
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        apiClient
-          .post("/auth/google", {
-            name: result.user.displayName,
-            email: result.user.email,
-            img: result.user.photoURL,
-          })
-          .then((res) => {
-            const token = res.data.token;
-            localStorage.setItem("accessToken", token);
-            dispatch(loginSuccess(res.data));
-            toast.success("Login Successful");
-            navigate("/"); // Assuming res.data.data contains the user object
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("An error occurred during login. Please try again.");
-        dispatch(loginFailure());
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const res = await apiClient.post("/auth/google", {
+        name: result.user.displayName,
+        email: result.user.email,
       });
+
+      if (res.data.success) {
+        const { accessToken } = res.data.data; // Adjust according to your actual response structure
+        localStorage.setItem("accessToken", accessToken);
+        // Save the entire user data if needed
+        localStorage.setItem("persist:root", JSON.stringify(res.data));
+        dispatch(loginSuccess(res.data));
+        toast.success("Login Successful");
+        navigate("/");
+      } else {
+        console.error(res.data.message);
+        toast.error("An error occurred during login. Please try again.");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("An error occurred during login. Please try again.");
+      dispatch(loginFailure());
+    }
   };
 
   return (
@@ -265,19 +268,12 @@ export default function SignInn() {
           <div className="line"></div>
         </SocialMessage>
         <SocialIcons>
-          <button
-            aria-label="Log in with Google"
-            className="icon"
+          <GoogleIcon
             onClick={signInWithGoogle}
-          >
-            <GoogleIcon />
-          </button>
-          <button aria-label="Log in with Twitter" className="icon">
-            <XIcon />
-          </button>
-          <button aria-label="Log in with GitHub" className="icon">
-            <GitHubIcon />
-          </button>
+            style={{ marginRight: "15px", marginLeft: "15px" }}
+          />
+          <XIcon style={{ marginRight: "15px", marginLeft: "15px" }} />
+          <GitHubIcon style={{ marginRight: "15px", marginLeft: "15px" }} />
         </SocialIcons>
         <SignupText>
           Dont have an account? <Link to="/sign-up">Sign Up</Link>

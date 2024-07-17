@@ -4,7 +4,7 @@ import { Video } from "../models/Video.js"
 import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from '../utils/asyncHandler.js'
-import { uploadOnCloudinary } from '../utils/Firebase.js';
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 export const updateUser = async (req, res, next) => {
     if (req.params.id === req.user.id) {

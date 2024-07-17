@@ -110,32 +110,6 @@ export const signIn = asyncHandler(async (req, res, next) => {
     }, "User logged in Successfully"));
 });
 
-export const googleAuth = asyncHandler(async (req, res, next) => {
-    try {
-        const user = await User.findOne({ email: req.body.email });
-        if (user) {
-            const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
-            res.status(200).json({
-                user: user._doc,
-                accessToken: token,
-            });
-        } else {
-            const newUser = new User({
-                ...req.body,
-                fromGoogle: true,
-            });
-            const savedUser = await newUser.save();
-            const token = jwt.sign({ id: savedUser._id }, process.env.ACCESS_TOKEN_SECRET);
-            res.status(200).json({
-                user: savedUser._doc,
-                accessToken: token,
-            });
-        }
-    } catch (err) {
-        next(err);
-    }
-});
-
 export const signOut = asyncHandler(async (req, res, next) => {
     return res.status(200).json(new ApiResponse(200, {}, "User logged Out"));
 });
@@ -167,5 +141,57 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
         );
     } catch (error) {
         throw new ApiError(401, error?.message || "Invalid refresh token");
+    }
+});
+
+
+const generateRandomSuffix = () => {
+    return Math.floor(1000 + Math.random() * 9000); // Generates a random number between 1000 and 9999
+};
+
+const isUsernameUnique = async (username) => {
+    const user = await User.findOne({ username });
+    return !user;
+};
+
+const generateUniqueUsername = async (name) => {
+    let username = name.toLowerCase().replace(/\s+/g, '') + generateRandomSuffix();
+    while (!(await isUsernameUnique(username))) {
+        username = name.toLowerCase().replace(/\s+/g, '') + generateRandomSuffix();
+    }
+    return username;
+};
+
+export const googleAuth = asyncHandler(async (req, res, next) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (user) {
+            const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user?._id);
+            console.log("user:", user)
+            return res.status(200).json(new ApiResponse(200, {
+                user: user._doc,
+                accessToken,
+                refreshToken,
+            }, "User logged in Successfully"));
+        } else {
+            const username = await generateUniqueUsername(req.body.name);
+            const newUser = new User({
+                ...req.body,
+                username,
+                avatar: req.body.name.charAt(0).toUpperCase(),
+                fromGoogle: true,
+            });
+            const savedUser = await newUser.save();
+            console.log("savedUser:", savedUser);
+            const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(savedUser?._id);
+            const loggedInUser = await User.findById(savedUser._id).select("-refreshToken");
+            return res.status(200).json(new ApiResponse(200, {
+                user: loggedInUser,
+                accessToken,
+                refreshToken,
+            }, "User logged in Successfully"));
+        }
+    } catch (err) {
+        next(err);
     }
 });

@@ -264,22 +264,6 @@ const LoginForm = () => {
             Sign Up
           </Button1>
         </Form>
-        <SocialMessage>
-          <div className="line"></div>
-          <p className="message">Login with social accounts</p>
-          <div className="line"></div>
-        </SocialMessage>
-        <SocialIcons>
-          <button aria-label="Log in with Google" className="icon">
-            <GoogleIcon />
-          </button>
-          <button aria-label="Log in with Twitter" className="icon">
-            <XIcon />
-          </button>
-          <button aria-label="Log in with GitHub" className="icon">
-            <GitHubIcon />
-          </button>
-        </SocialIcons>
         <SignupText>
           I already have an account. <Link to="/sign-in">Sign In</Link>
         </SignupText>

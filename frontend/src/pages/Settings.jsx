@@ -255,43 +255,47 @@ const Settings = () => {
           Edit Profile
         </Link>
       </EditProfile>
-      <Section>
-        <Title>Change Password</Title>
-        <InputGroup>
-          <label htmlFor="oldPassword">Old Password</label>
-          <input
-            type="password"
-            id="oldPassword"
-            name="oldPassword"
-            placeholder="Enter old password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-        </InputGroup>
-        <InputGroup>
-          <label htmlFor="newPassword">New Password</label>
-          <input
-            type="password"
-            id="newPassword"
-            name="newPassword"
-            placeholder="Enter new password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </InputGroup>
-        <InputGroup>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Confirm new password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </InputGroup>
-        <SaveButton onClick={handleChangePassword}>Save Changes</SaveButton>
-      </Section>
+      {currentUser.data.user.fromGoogle === false ? (
+        <Section>
+          <Title>Change Password</Title>
+          <InputGroup>
+            <label htmlFor="oldPassword">Old Password</label>
+            <input
+              type="password"
+              id="oldPassword"
+              name="oldPassword"
+              placeholder="Enter old password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </InputGroup>
+          <InputGroup>
+            <label htmlFor="newPassword">New Password</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              placeholder="Enter new password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </InputGroup>
+          <InputGroup>
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm new password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </InputGroup>
+          <SaveButton onClick={handleChangePassword}>Save Changes</SaveButton>
+        </Section>
+      ) : (
+        <div>{"   "}</div>
+      )}
       <Section>
         <Title>Delete Account</Title>
         <EditProfile>If you want to delete the account.</EditProfile>
