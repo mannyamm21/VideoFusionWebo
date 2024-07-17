@@ -103,7 +103,7 @@ userSchema.methods.generateRefreshToken = function () {
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
-            expiresIn: '4d'
+            expiresIn: '10d'
         }
     )
 }
