@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from "./components/Menu";
@@ -14,6 +14,7 @@ import SavedVideo from "./components/SavedVideo";
 import SignUp from "./pages/SignUp";
 import SignInn from "./pages/SignInn";
 import Settings from "./pages/Settings";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -29,9 +30,16 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-  const [darkMode, setDarkMode] = useState(true);
-  // const { currentUser } = useSelector((state) => state.user);
-
+  const { currentUser } = useSelector((state) => state.user);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Check local storage for theme preference
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode === "true"; // Convert to boolean
+  });
+  useEffect(() => {
+    // Save theme preference to local storage whenever it changes
+    localStorage.setItem("darkMode", darkMode);
+  }, [darkMode]);
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Container>
@@ -50,7 +58,10 @@ function App() {
                   <Route path="category/:category" element={<Categories />} />
                   <Route path="savedVideos/:userId" element={<SavedVideo />} />
                   <Route path="settings/:id" element={<Settings />} />
-                  <Route path="sign-up" element={<SignUp />} />
+                  <Route
+                    path="sign-up"
+                    element={currentUser ? <Home /> : <SignUp />}
+                  />
                   <Route path="sign-in" element={<SignInn />} />
                   <Route path="video/:id" element={<Video />} />
                 </Route>
