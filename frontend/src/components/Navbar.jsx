@@ -109,6 +109,8 @@ export default function Navbar() {
       const response = await apiClient.post("/auth/sign-out");
       console.log("Sign-out response:", response); // Debug log
       dispatch(logout());
+      // Remove accessToken from local storage
+      localStorage.removeItem("accessToken"); // Adjust the key if it's different
       toast.success("LogOut Successful");
       navigate("/sign-in"); // Redirect to sign-in page or homepage after logout
     } catch (error) {
