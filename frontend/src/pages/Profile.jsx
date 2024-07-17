@@ -177,13 +177,7 @@ const Profile = () => {
           />
           <Hr />
           <AvatarContainer>
-            <Avatar
-              src={
-                user.avatar ||
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1-o1j0s389fs_7icYMcCmjUeE0AeF1KkWgw&s"
-              }
-              alt="Avatar"
-            />
+            <Avatar src={user.avatar} alt="Avatar" />
             <UserInfo>
               <Name>{user.name}</Name>
               <Username>@{user.username}</Username>

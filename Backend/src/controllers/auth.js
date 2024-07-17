@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
-import bcrypt from 'bcryptjs';
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
@@ -162,6 +161,7 @@ const generateUniqueUsername = async (name) => {
     return username;
 };
 
+
 export const googleAuth = asyncHandler(async (req, res, next) => {
     try {
         const user = await User.findOne({ email: req.body.email });
@@ -178,7 +178,7 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
             const newUser = new User({
                 ...req.body,
                 username,
-                avatar: req.body.name.charAt(0).toUpperCase(),
+                avatar: "https://t3.ftcdn.net/jpg/01/77/54/02/360_F_177540231_SkxuDjyo8ECrPumqf0aeMbean2Ai1aOK.jpg",
                 fromGoogle: true,
             });
             const savedUser = await newUser.save();
