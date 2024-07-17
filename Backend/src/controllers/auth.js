@@ -3,7 +3,7 @@ import { ApiError } from '../utils/ApiError.js';
 import jwt from 'jsonwebtoken';
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { uploadOnCloudinary } from '../utils/Firebase.js';
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import bcrypt from 'bcryptjs';
 
 const generateAccessAndRefereshTokens = async (userId) => {
@@ -114,7 +114,7 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         if (user) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT);
+            const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
             res.status(200).json({
                 user: user._doc,
                 accessToken: token,
@@ -125,7 +125,7 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
                 fromGoogle: true,
             });
             const savedUser = await newUser.save();
-            const token = jwt.sign({ id: savedUser._id }, process.env.JWT);
+            const token = jwt.sign({ id: savedUser._id }, process.env.ACCESS_TOKEN_SECRET);
             res.status(200).json({
                 user: savedUser._doc,
                 accessToken: token,

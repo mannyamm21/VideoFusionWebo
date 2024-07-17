@@ -248,8 +248,12 @@ const LoginForm = () => {
             component="label"
             variant="contained"
             startIcon={<CloudUploadIcon />}
+            style={{
+              marginTop: "15px",
+              marginBottom: "15px",
+            }}
           >
-            Avatar Image
+            {avatarFile ? avatarFile.name : "Upload Avatar Image"}
             <VisuallyHiddenInput
               type="file"
               onChange={handleAvatarChange}
