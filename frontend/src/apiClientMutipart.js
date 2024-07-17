@@ -1,5 +1,6 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
+
+// Retrieve the token from local storage or a context/state management solution
 
 // Function to handle multipart/form-data requests
 const apiClientMultipart = axios.create({
@@ -13,7 +14,8 @@ const apiClientMultipart = axios.create({
 
 apiClientMultipart.interceptors.request.use(
     (config) => {
-        const token = Cookies.get("accessToken");
+        const token = localStorage.getItem('accessToken');
+        console.log('Access Token:', localStorage.getItem('accessToken'));
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
@@ -23,5 +25,5 @@ apiClientMultipart.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-// Export both clients
+
 export default apiClientMultipart;

@@ -180,9 +180,15 @@ export default function SignInn() {
         username,
         password,
       });
-      if (res.ok) {
+      if (res.data.success) {
+        const { accessToken } = res.data.data; // Adjust according to your actual response structure
+        localStorage.setItem("accessToken", accessToken);
+        // Save the entire user data if needed
+        localStorage.setItem("persist:root", JSON.stringify(res.data));
         console.log("User logged in successfully");
-        // Redirect or update UI
+        dispatch(loginSuccess(res.data));
+        toast.success("Login Successful");
+        navigate("/");
       } else {
         console.error(res.data.message);
       }
@@ -207,8 +213,9 @@ export default function SignInn() {
             img: result.user.photoURL,
           })
           .then((res) => {
-            console.log(res);
-            dispatch(loginSuccess(res.data.data));
+            const token = res.data.token;
+            localStorage.setItem("accessToken", token);
+            dispatch(loginSuccess(res.data));
             toast.success("Login Successful");
             navigate("/"); // Assuming res.data.data contains the user object
           });

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Install js-cookie if not already done
+
 // Retrieve the token from local storage or a context/state management solution
 
 const apiClient = axios.create({
@@ -10,9 +10,11 @@ const apiClient = axios.create({
         'Content-Type': 'application/json',
     }
 });
+
 apiClient.interceptors.request.use(
     (config) => {
-        const token = Cookies.get("accessToken");
+        const token = localStorage.getItem('accessToken');
+        console.log('Access Token:', localStorage.getItem('accessToken'));
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
