@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { googleAuth, signIn, signUp, signOut, refreshAccessToken } from '../controllers/auth.js'
+import { googleAuth, signIn, signUp, signOut, refreshAccessToken, forgotPassword, resetPassword } from '../controllers/auth.js'
 import { upload } from "../middleware/multer.middleware.js"
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -28,5 +28,8 @@ router.post("/sign-out", signOut)
 router.post("/google", googleAuth)
 
 router.post("/refresh-token", refreshAccessToken)
+
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 export default router;

@@ -1,6 +1,8 @@
 import mongoose, { Schema } from 'mongoose'
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
+import crypto from "crypto";
+
 const userSchema = new Schema({
     name: {
         type: String,
@@ -49,7 +51,9 @@ const userSchema = new Schema({
     },
     refreshToken: {
         type: String,
-    }
+    },
+    resetPasswordToken: { type: String }, // Add this field
+    resetPasswordExpires: { type: Date } // Add this field
 }, { timestamps: true })
 
 // Method to add video ID to user's videos array
@@ -106,5 +110,10 @@ userSchema.methods.generateRefreshToken = function () {
         }
     )
 }
+
+userSchema.methods.generatePasswordReset = function () {
+    this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    this.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+};
 
 export const User = mongoose.model("User", userSchema)

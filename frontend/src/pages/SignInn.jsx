@@ -249,7 +249,7 @@ export default function SignInn() {
               </span>
             </div>
             <ForgotPassword>
-              <Link rel="noopener noreferrer" to="#">
+              <Link rel="noopener noreferrer" to="/forgot-password">
                 Forgot Password?
               </Link>
             </ForgotPassword>

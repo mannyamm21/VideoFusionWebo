@@ -14,7 +14,9 @@ import SavedVideo from "./components/SavedVideo";
 import SignUp from "./pages/SignUp";
 import SignInn from "./pages/SignInn";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./components/ForgotPassword";
 import { useSelector } from "react-redux";
+import ResetPassword from "./components/Resetpassword";
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +66,11 @@ function App() {
                   />
                   <Route path="sign-in" element={<SignInn />} />
                   <Route path="video/:id" element={<Video />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<ResetPassword />}
+                  />
                 </Route>
               </Routes>
             </Wrapper>

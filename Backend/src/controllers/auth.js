@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
@@ -194,4 +196,78 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+});
+
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+export const forgotPassword = asyncHandler(async (req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) {
+        throw new ApiError(400, "Email is required");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new ApiError(404, "No user found with that email address");
+    }
+
+    user.generatePasswordReset();
+    await user.save();
+
+    const resetURL = `http://${process.env.CORS_ORIGIN}/reset-password/${user.resetPasswordToken}`;
+
+    const mailOptions = {
+        to: user.email,
+        from: {
+            name: "Video Fusion",
+            address: process.env.EMAIL_USERNAME,
+        },
+        subject: 'Password Reset',
+        text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+            `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+            `${resetURL}\n\n` +
+            `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+    };
+
+    transporter.sendMail(mailOptions, (err) => {
+        if (err) {
+            console.error("Error sending email:", err);
+            throw new ApiError(500, "Error sending the email");
+        }
+        res.status(200).json(new ApiResponse(200, {}, "Password reset email sent successfully"));
+    });
+});
+
+
+export const resetPassword = asyncHandler(async (req, res, next) => {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+        throw new ApiError(400, "Token and new password are required");
+    }
+
+    const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        throw new ApiError(400, "Password reset token is invalid or has expired");
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json(new ApiResponse(200, {}, "Password has been reset"));
 });
