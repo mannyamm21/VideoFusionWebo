@@ -67,6 +67,9 @@ export const signUp = asyncHandler(async (req, res, next) => {
         username: username.toLowerCase(),
     });
 
+    // Send welcome email
+    await sendWelcomeEmail(user.email, user.name);
+
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
     if (!createdUser) {
@@ -206,6 +209,25 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASSWORD
     }
 });
+
+export const sendWelcomeEmail = async (email, name) => {
+    const mailOptions = {
+        from: {
+            name: "Welcome to Video Fusion",
+            address: process.env.EMAIL_USERNAME,
+        },
+        to: email,
+        subject: 'Welcome to VideoFusion!',
+        text: `Hi ${name},\n\nWelcome to My VideoFusion! We're glad to have you on board.\n\nBest regards,\nThe My VideoFusion Team`
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Welcome email sent successfully');
+    } catch (error) {
+        console.error('Error sending welcome email:', error);
+    }
+};
 
 export const forgotPassword = asyncHandler(async (req, res, next) => {
     const { email } = req.body;
