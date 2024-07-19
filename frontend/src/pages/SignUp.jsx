@@ -1,13 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled1 from "styled-components";
-import { loginFailure, loginSuccess } from "../Context/userSlice";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Button from "@mui/material/Button";
-import GoogleIcon from "@mui/icons-material/Google";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import XIcon from "@mui/icons-material/X";
 import { toast } from "react-hot-toast";
 import apiClientMultipart from "../apiClientMutipart";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -141,7 +136,6 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
@@ -155,12 +149,10 @@ const LoginForm = () => {
         formData.append("avatar", avatarFile);
       }
 
-      const res = await apiClientMultipart.post("/auth/sign-up", formData);
-      dispatch(loginSuccess(res.data.data));
+      await apiClientMultipart.post("/auth/sign-up", formData);
       toast.success("Signed Up Successfully");
       navigate("/sign-in");
     } catch (error) {
-      dispatch(loginFailure());
       toast.error("An error occurred during signup. Please try again.");
     }
   };

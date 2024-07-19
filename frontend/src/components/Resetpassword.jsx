@@ -96,7 +96,7 @@ const ResetPassword = () => {
         password,
       });
       toast.success("Password has been reset successfully");
-      navigate("sign-in");
+      navigate("/");
     } catch (error) {
       toast.error("Failed to reset password");
     }

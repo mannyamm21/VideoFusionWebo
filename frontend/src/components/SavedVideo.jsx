@@ -39,9 +39,11 @@ export default function SavedVideo() {
 
   return (
     <Container>
-      {savedVideos.map((video) => (
-        <Card key={video._id} video={video} />
-      ))}
+      {savedVideos.length ? (
+        savedVideos.map((video) => <Card key={video._id} video={video} />)
+      ) : (
+        <div>No Saved Videos</div>
+      )}
     </Container>
   );
 }
