@@ -42,7 +42,9 @@ export default function SavedVideo() {
       {savedVideos.length ? (
         savedVideos.map((video) => <Card key={video._id} video={video} />)
       ) : (
-        <div>No Saved Videos</div>
+        <div style={{ color: `${({ theme }) => theme.text}` }}>
+          No Saved Videos
+        </div>
       )}
     </Container>
   );
