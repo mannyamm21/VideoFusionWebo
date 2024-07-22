@@ -237,162 +237,172 @@ const Settings = () => {
   const defaultAvatar =
     "https://t3.ftcdn.net/jpg/01/77/54/02/360_F_177540231_SkxuDjyo8ECrPumqf0aeMbean2Ai1aOK.jpg";
   return (
-    <Container>
-      <Section>
-        <Title>Account</Title>
-        <AvatarContainer>
-          <Avatar>
-            <img
-              src={currentUser?.data?.user?.avatar || defaultAvatar}
-              alt="Avatar"
-            />
-          </Avatar>
-          <UserInfo>
-            <Name>{currentUser?.data?.user?.name || "Account Name"}</Name>
-            <Email>{currentUser?.data?.user?.email || "User Email"}</Email>
-            <Username>
-              @{currentUser?.data?.user?.username || "Username"}
-            </Username>
-          </UserInfo>
-        </AvatarContainer>
-      </Section>
-      <EditProfile>
-        If you want to make changes in your account.{" "}
-        <Link to={`/profile/${currentUser?.data?.user?._id}`}>
-          Edit Profile
-        </Link>
-      </EditProfile>
-      {currentUser?.data?.user.fromGoogle === false ? (
-        <Section>
-          <Title>Change Password</Title>
-          <InputGroup>
-            <label htmlFor="oldPassword">Old Password</label>
-            <input
-              type="password"
-              id="oldPassword"
-              name="oldPassword"
-              placeholder="Enter old password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="newPassword">New Password</label>
-            <input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Confirm new password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </InputGroup>
-          <SaveButton onClick={handleChangePassword}>Save Changes</SaveButton>
-        </Section>
+    <>
+      {currentUser === null ? (
+        <div>
+          <Title>LogIn to see your account details</Title>
+        </div>
       ) : (
-        <div>{"   "}</div>
+        <Container>
+          <Section>
+            <Title>Account</Title>
+            <AvatarContainer>
+              <Avatar>
+                <img
+                  src={currentUser?.data?.user?.avatar || defaultAvatar}
+                  alt="Avatar"
+                />
+              </Avatar>
+              <UserInfo>
+                <Name>{currentUser?.data?.user?.name || "Account Name"}</Name>
+                <Email>{currentUser?.data?.user?.email || "User Email"}</Email>
+                <Username>
+                  @{currentUser?.data?.user?.username || "Username"}
+                </Username>
+              </UserInfo>
+            </AvatarContainer>
+          </Section>
+          <EditProfile>
+            If you want to make changes in your account.{" "}
+            <Link to={`/profile/${currentUser?.data?.user?._id}`}>
+              Edit Profile
+            </Link>
+          </EditProfile>
+          {currentUser?.data?.user.fromGoogle === false ? (
+            <Section>
+              <Title>Change Password</Title>
+              <InputGroup>
+                <label htmlFor="oldPassword">Old Password</label>
+                <input
+                  type="password"
+                  id="oldPassword"
+                  name="oldPassword"
+                  placeholder="Enter old password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+              </InputGroup>
+              <InputGroup>
+                <label htmlFor="newPassword">New Password</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="newPassword"
+                  placeholder="Enter new password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </InputGroup>
+              <InputGroup>
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </InputGroup>
+              <SaveButton onClick={handleChangePassword}>
+                Save Changes
+              </SaveButton>
+            </Section>
+          ) : (
+            <div>{"   "}</div>
+          )}
+          <Section>
+            <Title>Delete Account</Title>
+            <EditProfile>If you want to delete the account.</EditProfile>
+            <DeleteButton onClick={handleDeleteAccount}>
+              <span className="button__text">Delete</span>
+              <span className="button__icon">
+                <svg
+                  className="svg"
+                  height="512"
+                  viewBox="0 0 512 512"
+                  width="512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title></title>
+                  <path
+                    d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
+                    style={{
+                      fill: "none",
+                      stroke: "#fff",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      strokeWidth: "32px",
+                    }}
+                  ></path>
+                  <line
+                    style={{
+                      stroke: "#fff",
+                      strokeLinecap: "round",
+                      strokeMiterlimit: "10",
+                      strokeWidth: "32px",
+                    }}
+                    x1="80"
+                    x2="432"
+                    y1="112"
+                    y2="112"
+                  ></line>
+                  <path
+                    d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40"
+                    style={{
+                      fill: "none",
+                      stroke: "#fff",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      strokeWidth: "32px",
+                    }}
+                  ></path>
+                  <line
+                    style={{
+                      fill: "none",
+                      stroke: "#fff",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      strokeWidth: "32px",
+                    }}
+                    x1="256"
+                    x2="256"
+                    y1="176"
+                    y2="400"
+                  ></line>
+                  <line
+                    style={{
+                      fill: "none",
+                      stroke: "#fff",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      strokeWidth: "32px",
+                    }}
+                    x1="184"
+                    x2="192"
+                    y1="176"
+                    y2="400"
+                  ></line>
+                  <line
+                    style={{
+                      fill: "none",
+                      stroke: "#fff",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      strokeWidth: "32px",
+                    }}
+                    x1="328"
+                    x2="320"
+                    y1="176"
+                    y2="400"
+                  ></line>
+                </svg>
+              </span>
+            </DeleteButton>
+          </Section>
+        </Container>
       )}
-      <Section>
-        <Title>Delete Account</Title>
-        <EditProfile>If you want to delete the account.</EditProfile>
-        <DeleteButton onClick={handleDeleteAccount}>
-          <span className="button__text">Delete</span>
-          <span className="button__icon">
-            <svg
-              className="svg"
-              height="512"
-              viewBox="0 0 512 512"
-              width="512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title></title>
-              <path
-                d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                style={{
-                  fill: "none",
-                  stroke: "#fff",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round",
-                  strokeWidth: "32px",
-                }}
-              ></path>
-              <line
-                style={{
-                  stroke: "#fff",
-                  strokeLinecap: "round",
-                  strokeMiterlimit: "10",
-                  strokeWidth: "32px",
-                }}
-                x1="80"
-                x2="432"
-                y1="112"
-                y2="112"
-              ></line>
-              <path
-                d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40"
-                style={{
-                  fill: "none",
-                  stroke: "#fff",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round",
-                  strokeWidth: "32px",
-                }}
-              ></path>
-              <line
-                style={{
-                  fill: "none",
-                  stroke: "#fff",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round",
-                  strokeWidth: "32px",
-                }}
-                x1="256"
-                x2="256"
-                y1="176"
-                y2="400"
-              ></line>
-              <line
-                style={{
-                  fill: "none",
-                  stroke: "#fff",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round",
-                  strokeWidth: "32px",
-                }}
-                x1="184"
-                x2="192"
-                y1="176"
-                y2="400"
-              ></line>
-              <line
-                style={{
-                  fill: "none",
-                  stroke: "#fff",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round",
-                  strokeWidth: "32px",
-                }}
-                x1="328"
-                x2="320"
-                y1="176"
-                y2="400"
-              ></line>
-            </svg>
-          </span>
-        </DeleteButton>
-      </Section>
-    </Container>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import apiClient from "../apiClient";
 import { useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
+import { toast } from "react-hot-toast";
 
 const Container = styled.div``;
 
@@ -64,7 +65,8 @@ export default function Comments({ videoId }) {
       setComments([res.data, ...comments]);
       setNewComment("");
     } catch (error) {
-      console.log(error);
+      console.log("You are not Logged In");
+      toast.error("You are not Logged In");
     }
   };
 

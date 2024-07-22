@@ -1,6 +1,6 @@
 // Video.jsx
 import { useState, useEffect } from "react";
-import styled1, { css } from "styled-components";
+import styled1 from "styled-components";
 import Recommendation from "../components/Recommendation";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOffAltOutlinedIcon from "@mui/icons-material/ThumbDownOffAltOutlined";
@@ -19,7 +19,7 @@ import { red, grey } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import ShareModal from "../components/ShareModal";
 import apiClient from "../apiClient";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const Container = styled1.div`
   display: flex;
@@ -189,20 +189,35 @@ export default function Video() {
   }, [path, dispatch, currentUser]);
 
   const handleLike = async () => {
-    await apiClient.put(`/users/like/${currentVideo._id}`);
-    dispatch(like(currentUser?.data?.user?._id));
+    try {
+      await apiClient.put(`/users/like/${currentVideo._id}`);
+      dispatch(like(currentUser?.data?.user?._id));
+    } catch (error) {
+      console.log("You are not Logged In");
+      toast.error("You are not Logged In");
+    }
   };
 
   const handleDislike = async () => {
-    await apiClient.put(`/users/dislike/${currentVideo._id}`);
-    dispatch(dislike(currentUser?.data?.user?._id));
+    try {
+      await apiClient.put(`/users/dislike/${currentVideo._id}`);
+      dispatch(dislike(currentUser?.data?.user?._id));
+    } catch (error) {
+      console.log("You are not Logged In");
+      toast.error("You are not Logged In");
+    }
   };
 
   const handleSub = async () => {
-    const action = isSubscribed ? "unsub" : "sub";
-    await apiClient.put(`/users/${action}/${channel._id}`);
-    dispatch(subscription(channel._id));
-    setIsSubscribed(!isSubscribed);
+    try {
+      const action = isSubscribed ? "unsub" : "sub";
+      await apiClient.put(`/users/${action}/${channel._id}`);
+      dispatch(subscription(channel._id));
+      setIsSubscribed(!isSubscribed);
+    } catch (error) {
+      console.log("You are not Logged In");
+      toast.error("You are not Logged In");
+    }
   };
 
   const handleSaveVideo = async () => {
@@ -234,7 +249,6 @@ export default function Video() {
 
   return (
     <Container>
-      <Toaster />
       {currentVideo ? (
         <Content>
           <VideoWrapper>

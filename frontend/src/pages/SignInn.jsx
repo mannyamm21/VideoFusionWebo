@@ -186,7 +186,7 @@ export default function SignInn() {
         console.error(res.data.message);
       }
     } catch (error) {
-      toast.error("An error occurred during login. Please try again.");
+      toast.error("Username or Password are incorrect");
       dispatch(loginFailure());
     }
   };
@@ -209,7 +209,7 @@ export default function SignInn() {
         navigate("/");
       } else {
         console.error(res.data.message);
-        toast.error("An error occurred during login. Please try again.");
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.log(error);
