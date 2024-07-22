@@ -24,6 +24,10 @@ const categories = [
         title: "News",
         tags: ["news", "current events", "headlines", "breaking news", "world news"],
     },
+    {
+        id: "others",
+        title: "Others",
+    }
     // Add more categories as needed
 ];
 
