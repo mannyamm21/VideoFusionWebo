@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { subscription } from "../Context/userSlice";
-
+import { toast } from "react-hot-toast";
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -109,6 +109,7 @@ const ChannelCard = ({
       dispatch(subscription(channelId)); // Update Redux state
     } catch (error) {
       console.error("Error during subscription action:", error);
+      toast.error("You are not Logged In");
     }
   };
 

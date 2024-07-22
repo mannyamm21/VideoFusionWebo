@@ -103,6 +103,13 @@ export default function Navbar() {
   const [q, setQ] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleSearch = () => {
+    if (q.trim()) {
+      navigate(`/search?q=${q}`);
+    }
+  };
+
   const handleSignOut = async () => {
     try {
       console.log("Signing out..."); // Debug log
@@ -127,9 +134,13 @@ export default function Navbar() {
             <Input
               placeholder="Search"
               onChange={(e) => setQ(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter"}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
-            <SearchOutlinedIcon onClick={() => navigate(`/search?q=${q}`)} />
+            <SearchOutlinedIcon onClick={handleSearch} />
           </Search>
           {currentUser?.data?.user ? (
             <User>
