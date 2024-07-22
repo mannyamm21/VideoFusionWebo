@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 const app = express()
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || process.env.CORS_ORIGIN1, // or 
+    origin: process.env.CORS_ORIGIN, // or 
     credentials: true
 }))
 
