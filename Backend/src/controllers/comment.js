@@ -14,22 +14,29 @@ export const addComment = async (req, res, next) => {
 };
 
 export const deleteComment = async (req, res, next) => {
-    console.log("req.user.id", user);
     try {
         const comment = await Comment.findById(req.params.id);
+        console.log(req.params.id)
+        if (!comment) {
+            return next(new ApiError(404, "Comment not found"));
+        }
+
         const video = await Video.findById(comment.videoId);
-        if (req.user._id === comment.userId.toString() || req.user._id === video.userId.toString()) {
+        if (!video) {
+            return next(new ApiError(404, "Video not found"));
+        }
+
+        if (req.user._id.equals(comment.userId) || req.user._id.equals(video.userId)) {
             await Comment.findByIdAndDelete(req.params.id);
             await Video.findByIdAndUpdate(comment.videoId, { $pull: { comments: req.params.id } });
             res.status(200).json("The comment has been deleted.");
         } else {
-            throw new ApiError(403, error?.message);
+            return next(new ApiError(403, "You are not authorized to delete this comment"));
         }
     } catch (error) {
         next(error);
     }
 };
-
 export const getComments = async (req, res, next) => {
     try {
         const comments = await Comment.find({ videoId: req.params.videoId });

@@ -5,7 +5,7 @@ import apiClient from "../apiClient";
 import { Link } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector } from "react-redux";
-
+import { format } from "timeago.js";
 const Container = styled.div`
   display: flex;
   gap: 10px;
@@ -83,7 +83,7 @@ const Comment = ({ comment, onDelete }) => {
         <Link to={`/profile/${channel?._id}`}>
           <Name>{channel?.username}</Name>
         </Link>
-        <DateText>1 day ago</DateText>
+        <DateText>{format(comment?.createdAt)}</DateText>
         <Text>{comment?.desc}</Text>
       </Details>
       {currentUser?.data?.user?._id === channel?._id && (
