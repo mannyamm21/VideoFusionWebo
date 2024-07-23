@@ -8,9 +8,9 @@
 
 <h2>Project Screenshots:</h2>
 
-<img src="https://console.cloudinary.com/pm/c-bf254eba4b3323df29983e3b9612a3/media-explorer?assetId=61b03925b15afab54c27ec10a2fb3e22" alt="project-screenshot" width="600" height="400/">
+<img src="https://res-console.cloudinary.com/drrijqnfz/media_explorer_thumbnails/61b03925b15afab54c27ec10a2fb3e22/detailed" alt="project-screenshot" width="600" height="400/">
 
-<img src="https://console.cloudinary.com/pm/c-bf254eba4b3323df29983e3b9612a3/media-explorer?assetId=a591d0af0a0dc13947896aa5d08f678b" alt="project-screenshot" width="600" height="400/">
+<img src="https://res-console.cloudinary.com/drrijqnfz/media_explorer_thumbnails/38f1809cec5bd8c36c10e38e3a762dc1/detailed" alt="project-screenshot" width="600" height="400/">
 
   
   
