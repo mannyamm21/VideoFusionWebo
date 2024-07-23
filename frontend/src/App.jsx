@@ -62,7 +62,7 @@ function App() {
                   <Route path="settings/:id" element={<Settings />} />
                   <Route
                     path="sign-up"
-                    element={currentUser === null ? <Home /> : <SignUp />}
+                    element={currentUser ? <Home /> : <SignUp />}
                   />
                   <Route path="sign-in" element={<SignInn />} />
                   <Route path="video/:id" element={<Video />} />
