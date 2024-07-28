@@ -16,7 +16,8 @@ const Container = styled.div`
   flex-direction: column;
   padding: 20px;
   @media (max-width: 768px) {
-    padding: 10px; // Adjust padding for smaller screens
+    padding: 10px;
+    margin-top: 50px; // Adjust based on the height of your navbar
   }
 `;
 
@@ -210,8 +211,9 @@ const Profile = () => {
           {Array.isArray(videos) &&
             videos.map((video) => <Card key={video?._id} video={video} />)}
         </VideoContainer>
+
+        {open && <EditProfile setOpen={setOpen} />}
       </Container>
-      {open && <EditProfile setOpen={setOpen} />}
     </>
   );
 };

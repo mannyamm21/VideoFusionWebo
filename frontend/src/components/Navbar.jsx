@@ -15,14 +15,16 @@ import { toast } from "react-hot-toast";
 const Container = styled1.div`
   position: sticky;
   top: 0;
+  width: 100%;
   background-color: ${({ theme }) => theme.bg};
   height: 56px;
+  z-index: 1000;
 `;
 
 const Wrapper = styled1.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;  // Adjust this to space-between
   height: 100%;
   padding: 0px 20px;
   position: relative;
@@ -30,13 +32,10 @@ const Wrapper = styled1.div`
 
 const Search = styled1.div`
   width: 40%;
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-left: 200px;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
