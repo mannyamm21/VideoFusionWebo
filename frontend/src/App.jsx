@@ -70,10 +70,7 @@ function App() {
                   <Route path="category/:category" element={<Categories />} />
                   <Route path="savedVideos/:userId" element={<SavedVideo />} />
                   <Route path="settings/:id" element={<Settings />} />
-                  <Route
-                    path="sign-up"
-                    element={currentUser ? <Home /> : <SignUp />}
-                  />
+                  <Route path="sign-up" element={<SignUp />} />
                   <Route path="sign-in" element={<SignInn />} />
                   <Route path="video/:id" element={<Video />} />
                   <Route path="tiwtte/:id" element={<TiwttePage />} />
