@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const Container = styled.div`
   display: flex;
+  height: 100%;
   justify-content: space-between;
   flex-wrap: wrap;
 `;

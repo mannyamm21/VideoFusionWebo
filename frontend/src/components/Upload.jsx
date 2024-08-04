@@ -33,6 +33,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.bgLighter};
   color: ${({ theme }) => theme.text};
   padding: 20px;
+  border-radius: 7px;
   display: flex;
   flex-direction: column;
   gap: 20px;

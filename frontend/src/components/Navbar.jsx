@@ -11,6 +11,14 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import apiClient from "../apiClient";
 import { toast } from "react-hot-toast";
+import SlideshowIcon from "@mui/icons-material/Slideshow";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import UploadTiwtte from "./uploadTiwtte";
+import Logoo from "../img/logo.png";
+import MenuIcon from "@mui/icons-material/Menu";
+import Menu from "./Menu";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 const Container = styled1.div`
   position: sticky;
@@ -24,18 +32,20 @@ const Container = styled1.div`
 const Wrapper = styled1.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;  // Adjust this to space-between
+  justify-content: space-between;
   height: 100%;
   padding: 0px 20px;
   position: relative;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Search = styled1.div`
   width: 40%;
   display: flex;
+
   align-items: center;
   justify-content: space-between;
-  margin-left: 200px;
+  margin-left: 20px; /* Adjusted margin to position the search closer */
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -96,10 +106,57 @@ const Text2 = styled1.span`
   font-weight: 600;
 `;
 
-export default function Navbar() {
+const UploadSelect = styled1.div`
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: ${({ theme }) => theme.bgLighter};
+  border: 1px solid ${({ theme }) => theme.textSoft};
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1001;
+  display: ${({ open }) => (open ? "block" : "none")};
+`;
+
+const Option = styled1.div`
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.bgHover};
+  }
+`;
+
+const Logo = styled1.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Reduced gap to move closer */
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 22px;
+  color: ${({ theme }) => theme.text};
+`;
+
+const Img = styled1.img`
+  height: 40px;
+`;
+
+const MenuButton = styled1.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+export default function Navbar({ darkMode, setDarkMode }) {
   const { currentUser } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [uploadType, setUploadType] = useState("");
   const [q, setQ] = useState("");
+  const [uploadSelectOpen, setUploadSelectOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // New state for menu
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -111,24 +168,35 @@ export default function Navbar() {
 
   const handleSignOut = async () => {
     try {
-      console.log("Signing out..."); // Debug log
       const response = await apiClient.post("/auth/sign-out");
-      console.log("Sign-out response:", response); // Debug log
       dispatch(logout());
-      // Remove accessToken from local storage
-      localStorage.removeItem("accessToken"); // Adjust the key if it's different
+      localStorage.removeItem("accessToken");
       toast.success("LogOut Successful");
-      navigate("/sign-in"); // Redirect to sign-in page or homepage after logout
+      navigate("/sign-in");
     } catch (error) {
-      console.error("Failed to sign out", error);
-      toast.error("Error during logout:", error);
+      toast.error("Error during logout");
     }
+  };
+
+  const handleUploadSelect = (type) => {
+    setUploadType(type);
+    setUploadSelectOpen(false);
+    setOpen(true);
   };
 
   return (
     <>
       <Container>
         <Wrapper>
+          <MenuButton onClick={() => setMenuOpen(!menuOpen)}>
+            <MenuIcon />
+          </MenuButton>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Logo>
+              <Img src={Logoo} />
+              VideoFusion
+            </Logo>
+          </Link>
           <Search>
             <Input
               placeholder="Search"
@@ -141,9 +209,35 @@ export default function Navbar() {
             />
             <SearchOutlinedIcon onClick={handleSearch} />
           </Search>
+          <div>
+            {darkMode ? (
+              <LightModeIcon
+                onClick={() => setDarkMode(!darkMode)}
+                style={{ cursor: "pointer" }}
+              />
+            ) : (
+              <DarkModeIcon
+                onClick={() => setDarkMode(!darkMode)}
+                style={{ cursor: "pointer" }}
+              />
+            )}
+          </div>
           {currentUser?.data?.user ? (
             <User>
-              <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
+              <VideoCallOutlinedIcon
+                onClick={() => setUploadSelectOpen(!uploadSelectOpen)}
+                style={{ cursor: "pointer" }}
+              />
+              {uploadSelectOpen && (
+                <UploadSelect open={uploadSelectOpen}>
+                  <Option onClick={() => handleUploadSelect("video")}>
+                    <SlideshowIcon /> Upload Video
+                  </Option>
+                  <Option onClick={() => handleUploadSelect("tiwtte")}>
+                    <PostAddIcon /> Tiwtte
+                  </Option>
+                </UploadSelect>
+              )}
               <NotificationsNoneIcon />
               <Link
                 to={
@@ -179,7 +273,9 @@ export default function Navbar() {
           )}
         </Wrapper>
       </Container>
-      {open && <Upload setOpen={setOpen} />}
+      {open && uploadType === "tiwtte" && <UploadTiwtte setOpen={setOpen} />}
+      {open && uploadType === "video" && <Upload setOpen={setOpen} />}
+      <Menu open={menuOpen} setOpen={setMenuOpen} />
     </>
   );
 }

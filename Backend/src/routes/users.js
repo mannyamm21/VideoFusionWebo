@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, dislike, getUser, like, subscribe, unsubscribe, changeCurrentPassword, updateUser, updateUserAvatar, updateUserCoverImage, search, saveVideo, unsaveVideo, getSavedVideos } from '../controllers/user.js'
+import { deleteUser, dislike, getUser, like, subscribe, unsubscribe, changeCurrentPassword, updateUser, updateUserAvatar, updateUserCoverImage, search, saveVideo, unsaveVideo, getSavedVideos, dislikeTiwtte, likeTiwtte } from '../controllers/user.js'
 import { verifyToken } from "../middleware/verifyToken.js";
 import { upload } from "../middleware/multer.middleware.js"
 const router = Router();
@@ -24,6 +24,13 @@ router.put("/like/:videoId", verifyToken, like)
 
 // Dislike a Video
 router.put("/dislike/:videoId", verifyToken, dislike)
+
+
+// Like a Tiwtte
+router.put("/liketiwtte/:postId", verifyToken, likeTiwtte)
+
+// Dislike a Tiwtte
+router.put("/disliketiwtte/:postId", verifyToken, dislikeTiwtte)
 
 router.get("/search", search)
 

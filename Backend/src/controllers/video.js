@@ -1,4 +1,4 @@
-import { Video } from '../models/Video.js'
+import { Video } from '../models/Video.js';
 import { User } from '../models/User.js';
 
 export const addVideo = async (req, res, next) => {

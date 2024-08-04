@@ -20,7 +20,7 @@ const uploadOnCloudinary = async (localFilePath) => {
                 fs.unlinkSync(localFilePath);
                 console.log(`File ${localFilePath} removed after 10 minutes.`);
             }
-        }, 300000); // 300000 milliseconds = 10 minutes
+        }, 30000); // 300000 milliseconds = 10 minutes
 
         const response = await cloudinary.uploader.upload(localFilePath, { resource_type: "auto" });
         return response;

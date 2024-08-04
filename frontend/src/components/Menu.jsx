@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import Logoo from "../img/logo.png";
+import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
 import VideoLibraryOutlinedIcon from "@mui/icons-material/VideoLibraryOutlined";
@@ -16,33 +17,24 @@ import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
+import { useSelector } from "react-redux";
 
-const Container = styled.div`
-  flex: 1;
-  background-color: ${({ theme }) => theme.bg};
+const MenuContainer = styled.div`
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 200px;
   height: 100vh;
+  background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text};
   font-size: 14px;
-  position: sticky;
-  top: 0;
-`;
-const Wrapper = styled.div`
-  padding: 18px 26px;
-`;
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  font-size: 22px;
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
 `;
 
-const Img = styled.img`
-  height: 40px;
+const Wrapper = styled.div`
+  padding: 18px 26px;
 `;
 
 const Item = styled.div`
@@ -71,21 +63,22 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-export default function Menu({ darkMode, setDarkMode }) {
+export default function Menu({ open, setOpen }) {
   const { currentUser } = useSelector((state) => state.user);
+
   return (
-    <Container>
+    <MenuContainer open={open}>
       <Wrapper>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <Logo>
-            <Img src={Logoo} />
-            VideoFusion
-          </Logo>
-        </Link>
         <Link to="/" style={{ textDecoration: "none" }}>
           <Item>
             <HomeIcon />
             Home
+          </Item>
+        </Link>
+        <Link to="/all" style={{ textDecoration: "none" }}>
+          <Item>
+            <DynamicFeedIcon />
+            Tiwttes
           </Item>
         </Link>
         <Link to="trend" style={{ textDecoration: "none" }}>
@@ -129,7 +122,7 @@ export default function Menu({ darkMode, setDarkMode }) {
                   SIGN IN
                 </Button>
               </Login>
-            </Link>{" "}
+            </Link>
           </>
         )}
         <Hr />
@@ -171,15 +164,17 @@ export default function Menu({ darkMode, setDarkMode }) {
           </Item>
         </Link>
         <Hr />
-        <Link
-          to={`/settings/${currentUser?.data?.user?._id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <Item>
-            <SettingsOutlinedIcon />
-            Settings
-          </Item>
-        </Link>
+        {currentUser && (
+          <Link
+            to={`/settings/${currentUser?.data?.user?._id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Item>
+              <SettingsOutlinedIcon />
+              Settings
+            </Item>
+          </Link>
+        )}
         <Item>
           <FlagOutlinedIcon />
           Report
@@ -188,11 +183,11 @@ export default function Menu({ darkMode, setDarkMode }) {
           <HelpOutlineOutlinedIcon />
           Help
         </Item>
-        <Item onClick={() => setDarkMode(!darkMode)}>
+        {/* <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlinedIcon />
           {darkMode ? "Light" : "Dark"} Mode
-        </Item>
+        </Item> */}
       </Wrapper>
-    </Container>
+    </MenuContainer>
   );
 }

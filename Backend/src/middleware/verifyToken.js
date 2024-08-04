@@ -6,9 +6,6 @@ import { User } from '../models/User.js';
 export const verifyToken = asyncHandler(async (req, res, next) => {
     try {
         const token = req.header("Authorization")?.replace("Bearer ", "");
-        console.log('Headers:', req.headers);
-        console.log('Extracted Token:', token);
-
         if (!token) {
             return res.status(401).json({ message: 'Token is missing' });
         }

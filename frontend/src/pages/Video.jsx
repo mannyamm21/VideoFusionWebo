@@ -146,6 +146,7 @@ const ColorButton = styled(Button)(({ theme, subscribed }) => ({
     backgroundColor: subscribed ? grey[600] : red[700],
   },
   border: "none",
+  width: "20%",
   borderRadius: "3px",
   height: "max-content",
   padding: "10px 20px",

@@ -10,6 +10,7 @@ import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { subscription } from "../Context/userSlice";
 import apiClient from "../apiClient";
+import TiwttePost from "../components/TiwttePost";
 
 const Container = styled.div`
   display: flex;
@@ -72,15 +73,26 @@ const SubscribersCount = styled.p`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const SectionTitle = styled.h3`
+const SectionTitle = styled.div`
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  font-size: 18px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.text};
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
   margin-top: 180px;
+`;
+
+const OptionText = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+  color: ${({ theme, active }) => (active ? theme.text : theme.textSoft)};
+  padding: 5px;
+  border: 1px solid ${({ theme }) => theme.soft};
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => theme.text};
+  }
 `;
 
 const VideoContainer = styled.div`
@@ -106,7 +118,6 @@ const ColorButton = muiStyled(Button)(({ theme, $subscribed }) => ({
   right: "20px",
 }));
 
-// Add media query separately
 const ResponsiveColorButton = muiStyled(ColorButton)(({ theme }) => ({
   "@media (max-width: 768px)": {
     top: "250px",
@@ -118,10 +129,12 @@ const Profile = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [videos, setVideos] = useState([]);
+  const [tiwttes, setTiwttes] = useState([]);
   const [open, setOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [channel, setChannel] = useState({});
+  const [selectedOption, setSelectedOption] = useState("videos");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -130,6 +143,7 @@ const Profile = () => {
         const userData = userRes.data;
         setUser(userData);
         setChannel(userData);
+
         const videoIds = userData.videos;
         const videoPromises = videoIds.map((id) =>
           apiClient.get(`/videos/find/${id}`)
@@ -137,6 +151,17 @@ const Profile = () => {
         const videoResults = await Promise.all(videoPromises);
         const videosData = videoResults.map((res) => res.data);
         setVideos(videosData);
+
+        const tiwtteIds = userData.tiwttes;
+        const tiwttePromises = tiwtteIds.map((id) =>
+          apiClient.get(`/tiwttes/find/${id}`)
+        );
+        const tiwtteResults = await Promise.all(tiwttePromises);
+        const tiwttesData = tiwtteResults.map((res) => res.data);
+        tiwttesData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setTiwttes(tiwttesData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -206,10 +231,29 @@ const Profile = () => {
           </ResponsiveColorButton>
         </Header>
 
-        <SectionTitle>Uploaded Videos</SectionTitle>
+        <SectionTitle>
+          <OptionText
+            active={selectedOption === "videos"}
+            onClick={() => setSelectedOption("videos")}
+          >
+            Videos
+          </OptionText>
+          <OptionText
+            active={selectedOption === "tiwttes"}
+            onClick={() => setSelectedOption("tiwttes")}
+          >
+            Tiwttes
+          </OptionText>
+        </SectionTitle>
         <VideoContainer>
-          {Array.isArray(videos) &&
+          {selectedOption === "videos" &&
+            Array.isArray(videos) &&
             videos.map((video) => <Card key={video?._id} video={video} />)}
+          {selectedOption === "tiwttes" &&
+            Array.isArray(tiwttes) &&
+            tiwttes.map((tiwtte) => (
+              <TiwttePost key={tiwtte._id} post={tiwtte} />
+            ))}
         </VideoContainer>
 
         {open && <EditProfile setOpen={setOpen} />}

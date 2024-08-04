@@ -8,6 +8,12 @@ import apiClient from "../apiClient";
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds space between sections */
+`;
+
+const Section = styled.div`
+  display: flex;
   flex-wrap: wrap;
   gap: 10px;
 `;
@@ -40,26 +46,29 @@ export default function Search() {
 
   return (
     <Container>
-      {videos.map((video) => (
-        <Card key={video._id} video={video} />
-      ))}
+      {/* Video Section */}
 
-      {users.map((user) => (
-        <ChannelCard
-          key={user._id}
-          channelId={user._id}
-          avatar={user.avatar}
-          channelName={user.name}
-          username={user.username}
-          videoCount={user.videos.length}
-          subscriber={user.subscribers}
-        />
-      ))}
-      <div>{"      "}</div>
-      <Hr />
-      {users.map((user) =>
-        user.videos.map((video) => <VideoCard key={video} videoId={video} />)
-      )}
+      {/* Channel Section */}
+      <Section>
+        {users.map((user) => (
+          <ChannelCard
+            key={user._id}
+            channelId={user._id}
+            avatar={user.avatar}
+            channelName={user.name}
+            username={user.username}
+            videoCount={user.videos.length}
+            subscriber={user.subscribers}
+          />
+        ))}
+      </Section>
+
+      {/* Video Cards for each user's videos */}
+      <Section>
+        {users.map((user) =>
+          user.videos.map((video) => <VideoCard key={video} videoId={video} />)
+        )}
+      </Section>
     </Container>
   );
 }

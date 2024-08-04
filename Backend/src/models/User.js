@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import crypto from "crypto";
+import { type } from 'os';
 
 const userSchema = new Schema({
     name: {
@@ -44,6 +45,9 @@ const userSchema = new Schema({
     subscribedUsers: {
         type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         unique: true,
+    },
+    tiwttes: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'Tiwtte' }]
     },
     fromGoogle: {
         type: Boolean,

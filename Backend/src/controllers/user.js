@@ -1,4 +1,5 @@
 
+import { Tiwtte } from "../models/Tiwttes.js";
 import { User } from "../models/User.js"
 import { Video } from "../models/Video.js"
 import { ApiError } from "../utils/ApiError.js"
@@ -86,6 +87,34 @@ export const like = async (req, res, next) => {
             $pull: { dislikes: id }
         })
         res.status(200).json("The video has been liked.")
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const likeTiwtte = async (req, res, next) => {
+    const userId = req.user.id;
+    const tiwtteId = req.params.postId;
+    try {
+        await Tiwtte.findByIdAndUpdate(tiwtteId, {
+            $addToSet: { likes: userId },
+            $pull: { dislikes: userId }
+        });
+        res.status(200).json({ message: "The Tiwtte has been liked.", userId, tiwtteId });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const dislikeTiwtte = async (req, res, next) => {
+    const userId = req.user.id;
+    const tiwtteId = req.params.postId;
+    try {
+        await Tiwtte.findByIdAndUpdate(tiwtteId, {
+            $addToSet: { dislikes: userId },
+            $pull: { likes: userId }
+        });
+        res.status(200).json({ message: "The Tiwtte has been disliked.", userId, tiwtteId });
     } catch (error) {
         next(error);
     }

@@ -13,7 +13,7 @@ const Container = styled.div`
   gap: 10px;
 
   @media (max-width: 768px) {
-    width: 100%; // Full width on small screens
+    width: 100%; //Full width on small screens
     flex-direction: column; // Stack elements vertically
   }
 `;
