@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import apiClient from "../apiClient";
-import { CircularProgress, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
@@ -98,7 +98,6 @@ const ChannelName = styled.p`
 
 export default function TiwttePage() {
   const [tiwtte, setTiwtte] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const [channel, setChannel] = useState({});
@@ -132,8 +131,6 @@ export default function TiwttePage() {
       } catch (error) {
         console.error("Error fetching post:", error);
         dispatch(fetchFailure());
-      } finally {
-        setLoading(false);
       }
     };
     fetchPost();
@@ -171,14 +168,6 @@ export default function TiwttePage() {
       toast.error("Tiwtte has not been deleted");
     }
   };
-
-  if (loading) {
-    return (
-      <PageContainer>
-        <CircularProgress />
-      </PageContainer>
-    );
-  }
 
   if (!tiwtte) {
     return <PageContainer>Tiwtte not found</PageContainer>;
