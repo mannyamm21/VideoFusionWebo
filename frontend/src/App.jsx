@@ -40,16 +40,35 @@ const Wrapper = styled.div`
     theme.bg}; /* Apply background color from theme */
 `;
 
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: ${({ theme }) => theme.text};
+`;
+
 function App() {
   const { currentUser } = useSelector((state) => state.user);
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : false;
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
+
+  useEffect(() => {
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Adjust the delay as needed
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -58,30 +77,40 @@ function App() {
           <Menu />
           <Main>
             <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-            <Wrapper>
-              <Routes>
-                <Route path="/">
-                  <Route index element={<Home />} />
-                  <Route path="/profile/:userId" element={<Profile />} />
-                  <Route path="trend" element={<Home type="trend" />} />
-                  <Route path="all" element={<Tiwttes />} />
-                  <Route path="sub" element={<Home type="sub" />} />
-                  <Route path="search" element={<Search />} />
-                  <Route path="category/:category" element={<Categories />} />
-                  <Route path="savedVideos/:userId" element={<SavedVideo />} />
-                  <Route path="settings/:id" element={<Settings />} />
-                  <Route path="sign-up" element={<SignUp />} />
-                  <Route path="sign-in" element={<SignInn />} />
-                  <Route path="video/:id" element={<Video />} />
-                  <Route path="tiwtte/:id" element={<TiwttePage />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route
-                    path="/reset-password/:token"
-                    element={<ResetPassword />}
-                  />
-                </Route>
-              </Routes>
-            </Wrapper>
+            {loading ? (
+              <Loading>Loading...</Loading>
+            ) : (
+              <Wrapper>
+                <Routes>
+                  <Route path="/">
+                    <Route index element={<Home />} />
+                    <Route path="/profile/:userId" element={<Profile />} />
+                    <Route path="trend" element={<Home type="trend" />} />
+                    <Route path="all" element={<Tiwttes />} />
+                    <Route path="sub" element={<Home type="sub" />} />
+                    <Route path="search" element={<Search />} />
+                    <Route path="category/:category" element={<Categories />} />
+                    <Route
+                      path="savedVideos/:userId"
+                      element={<SavedVideo />}
+                    />
+                    <Route path="settings/:id" element={<Settings />} />
+                    <Route path="sign-up" element={<SignUp />} />
+                    <Route path="sign-in" element={<SignInn />} />
+                    <Route path="video/:id" element={<Video />} />
+                    <Route path="tiwtte/:id" element={<TiwttePage />} />
+                    <Route
+                      path="/forgot-password"
+                      element={<ForgotPassword />}
+                    />
+                    <Route
+                      path="/reset-password/:token"
+                      element={<ResetPassword />}
+                    />
+                  </Route>
+                </Routes>
+              </Wrapper>
+            )}
           </Main>
         </BrowserRouter>
       </Container>

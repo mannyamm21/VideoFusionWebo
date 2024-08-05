@@ -21,10 +21,11 @@ const Container = styled.div`
 `;
 
 const Image = styled.img`
-  width: auto;
-  height: auto;
+  max-width: 100%;
+  max-height: 350px; /* Adjust this value as needed */
   border-radius: 10px;
   margin-bottom: 10px;
+  object-fit: contain; /* or use 'cover' based on your preference */
 `;
 
 const Description = styled.p`
