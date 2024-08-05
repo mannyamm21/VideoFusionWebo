@@ -64,7 +64,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
         coverImage: coverImage?.url || "",
         email,
         password,
-        username: username.toLowerCase(),
+        username: username,
     });
 
     // Send welcome email
