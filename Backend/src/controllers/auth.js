@@ -218,7 +218,24 @@ export const sendWelcomeEmail = async (email, name) => {
         },
         to: email,
         subject: 'Welcome to VideoFusion!',
-        text: `Hi ${name},\n\nWelcome to My VideoFusion! We're glad to have you on board.\n\nBest regards,\nThe My VideoFusion Team`
+        text: `Hi ${name},
+    
+    Welcome to VideoFusion! We're thrilled to have you as a part of our community.
+    
+    At VideoFusion, we believe in the power of sharing and discovering amazing content. Whether you're here to watch, upload, or engage with our vibrant community, we have something for everyone.
+    
+    Here's how you can get started:
+    1. **Upload Your Videos**: Share your unique videos with the world. Click the "Upload" button on our homepage to start sharing your creativity.
+    2. **Explore Content**: Dive into a vast library of videos across various categories. From tutorials to entertainment, there's always something new to discover.
+    3. **Make Tiwtte Posts**: Engage with the community by creating Tiwtte posts. Share your thoughts, start discussions, and connect with like-minded individuals.
+    
+    We can't wait to see the incredible content you'll bring to VideoFusion. If you have any questions or need assistance, our support team is always here to help.
+    
+    Enjoy your time on VideoFusion, and happy sharing!
+    
+    Best regards,
+    The VideoFusion Team
+    `
     };
 
     try {

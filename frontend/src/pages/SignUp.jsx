@@ -153,7 +153,8 @@ const LoginForm = () => {
       toast.success("Signed Up Successfully");
       navigate("/sign-in");
     } catch (error) {
-      toast.error("An error occurred during signup. Please try again.");
+      console.log(error);
+      toast.error("An error occurred during signup. Please try again.", error);
     }
   };
 
@@ -181,7 +182,7 @@ const LoginForm = () => {
             <input
               type="text"
               name="username"
-              placeholder="Username"
+              placeholder="Username Should be in lowercase"
               onChange={(e) => setUsername(e.target.value)}
             />
           </InputGroup>

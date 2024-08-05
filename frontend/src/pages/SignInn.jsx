@@ -186,6 +186,7 @@ export default function SignInn() {
         console.error(res.data.message);
       }
     } catch (error) {
+      console.log(error);
       toast.error("Username or Password are incorrect");
       dispatch(loginFailure());
     }
@@ -228,7 +229,7 @@ export default function SignInn() {
             <input
               type="text"
               name="username"
-              placeholder="Username"
+              placeholder="Username Should be in lowercase"
               onChange={(e) => setUsername(e.target.value)}
             />
           </InputGroup>
